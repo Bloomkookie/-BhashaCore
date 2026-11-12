@@ -1,0 +1,355 @@
+{
+  "schema_version": "1.0",
+  "project": "BhashaCore",
+  "purpose": "A fictional scholarship FAQ dataset for prototype testing only. It is not real government policy.",
+  "verification_policy": {
+    "source_policy": "Only publish real public-service answers after confirming them against an authoritative official source.",
+    "translation_policy": "All non-English answer strings in this starter file are drafts and must be reviewed by fluent native speakers before being marked verified.",
+    "unverified_behavior": "The application should not present unverified translations as verified. Until review is complete, use these as editing drafts only."
+  },
+  "languages": {
+    "en": {
+      "name": "English",
+      "review_status": "ready_for_content_review"
+    },
+    "hi": {
+      "name": "Hindi",
+      "review_status": "draft_unverified"
+    },
+    "bn": {
+      "name": "Bengali",
+      "review_status": "draft_unverified"
+    },
+    "pa": {
+      "name": "Punjabi",
+      "review_status": "draft_unverified"
+    },
+    "as": {
+      "name": "Assamese",
+      "review_status": "draft_unverified"
+    },
+    "ne": {
+      "name": "Nepali",
+      "review_status": "draft_unverified"
+    }
+  },
+  "faqs": [
+    {
+      "id": "required_documents",
+      "topic": "required_documents",
+      "question_examples": {
+        "en": [
+          "What documents are required for the scholarship?",
+          "Which documents do I need?",
+          "Please list every document I need to provide.",
+          "Do I need to provide bank account details?"
+        ],
+        "hi": [
+          "छात्रवृत्ति के लिए कौन-कौन से दस्तावेज़ आवश्यक हैं?",
+          "मुझे कौन से दस्तावेज़ चाहिए?",
+          "कृपया उन सभी दस्तावेज़ों की सूची दें जिन्हें मुझे जमा करना होगा।",
+          "क्या मुझे बैंक खाते का विवरण देना होगा?"
+        ],
+        "bn": [
+          "বৃত্তির জন্য কোন কোন নথি প্রয়োজন?",
+          "আমার কি কি নথি লাগবে?",
+          "আমাকে জমা দিতে হবে এমন সব নথির তালিকা দিন।",
+          "আমাকে কি ব্যাঙ্ক অ্যাকাউন্টের তথ্য দিতে হবে?"
+        ],
+        "pa": [
+          "ਵਜ਼ੀਫ਼ੇ ਲਈ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਲੋੜੀਂਦੇ ਹਨ?",
+          "ਮੈਨੂੰ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਚਾਹੀਦੇ ਹਨ?",
+          "ਕਿਰਪਾ ਕਰਕੇ ਉਹ ਸਾਰੇ ਦਸਤਾਵੇਜ਼ ਦੱਸੋ ਜੋ ਮੈਨੂੰ ਜਮ੍ਹਾਂ ਕਰਵਾਉਣੇ ਹਨ।",
+          "ਕੀ ਮੈਨੂੰ ਬੈਂਕ ਖਾਤੇ ਦੇ ਵੇਰਵੇ ਦੇਣੇ ਪੈਣਗੇ?"
+        ],
+        "as": [
+          "বৃত্তিৰ বাবে কি কি নথি-পত্ৰৰ প্ৰয়োজন?",
+          "মোৰ কি কি নথি লাগিব?",
+          "মই জমা দিবলগীয়া সকলো নথি-পত্ৰৰ তালিকা দিয়ক।",
+          "মই বেংক একাউণ্টৰ তথ্য দিব লাগিবনে?"
+        ],
+        "ne": [
+          "छात्रवृत्तिका लागि कुन-कुन कागजात चाहिन्छ?",
+          "मलाई कुन कुन कागजात चाहिन्छ?",
+          "मैले बुझाउनुपर्ने सबै कागजातको सूची दिनुहोस्।",
+          "के मैले बैंक खाताको विवरण दिनुपर्छ?"
+        ]
+      },
+      "answer": {
+        "en": "For this fictional test scholarship, the required documents are: an identity document, proof of enrollment, a recent academic record, and bank account details.",
+        "hi": "इस काल्पनिक परीक्षण छात्रवृत्ति के लिए आवश्यक दस्तावेज़ हैं: पहचान पत्र, नामांकन का प्रमाण, हाल का शैक्षणिक रिकॉर्ड और बैंक खाते का विवरण।",
+        "bn": "এই কাল্পনিক পরীক্ষামূলক বৃত্তির জন্য প্রয়োজনীয় নথিগুলি হলো: পরিচয়পত্র, ভর্তি বা নাম নথিভুক্তির প্রমাণ, সাম্প্রতিক শিক্ষাগত রেকর্ড এবং ব্যাঙ্ক অ্যাকাউন্টের বিবরণ।",
+        "pa": "ਇਸ ਕਾਲਪਨਿਕ ਟੈਸਟ ਵਜ਼ੀਫ਼ੇ ਲਈ ਲੋੜੀਂਦੇ ਦਸਤਾਵੇਜ਼ ਹਨ: ਪਛਾਣ ਪੱਤਰ, ਦਾਖ਼ਲੇ ਦਾ ਸਬੂਤ, ਹਾਲੀਆ ਅਕਾਦਮਿਕ ਰਿਕਾਰਡ ਅਤੇ ਬੈਂਕ ਖਾਤੇ ਦੇ ਵੇਰਵੇ।",
+        "as": "এই কাল্পনিক পৰীক্ষামূলক বৃত্তিৰ বাবে প্ৰয়োজনীয় নথি-পত্ৰসমূহ হ’ল: পৰিচয়-পত্ৰ, নামভৰ্তিৰ প্ৰমাণ, শেহতীয়া শৈক্ষিক ৰেকৰ্ড আৰু বেংক একাউণ্টৰ বিৱৰণ।",
+        "ne": "यस काल्पनिक परीक्षण छात्रवृत्तिका लागि आवश्यक कागजातहरू हुन्: परिचयपत्र, भर्नाको प्रमाण, हालैको शैक्षिक अभिलेख र बैंक खाताको विवरण।"
+      },
+      "facts": [
+        "identity document",
+        "proof of enrollment",
+        "recent academic record",
+        "bank account details"
+      ],
+      "source": {
+        "type": "project_test_fixture",
+        "reference": "KNOWLEDGE_BASE in original app.py"
+      },
+      "fictional": true,
+      "translation_status": "draft_unverified"
+    },
+    {
+      "id": "application_deadline",
+      "topic": "application_deadline",
+      "question_examples": {
+        "en": [
+          "What is the application deadline?",
+          "When do applications close?",
+          "What is the last date to apply?"
+        ],
+        "hi": [
+          "आवेदन की अंतिम तिथि क्या है?",
+          "आवेदन जमा करने की आखिरी तारीख कब है?",
+          "आवेदन करने की अंतिम तारीख क्या है?"
+        ],
+        "bn": [
+          "আবেদনের শেষ তারিখ কী?",
+          "আবেদন জমা দেওয়ার শেষ সময় কখন?",
+          "আবেদন করার অন্তিম তারিখ কবে?"
+        ],
+        "pa": [
+          "ਅਰਜ਼ੀ ਦੇਣ ਦੀ ਆਖ਼ਰੀ ਮਿਤੀ ਕੀ ਹੈ?",
+          "ਅਰਜ਼ੀਆਂ ਜਮ੍ਹਾਂ ਕਰਵਾਉਣ ਦੀ ਆਖ਼ਰੀ ਤਾਰੀਖ ਕਦੋਂ ਹੈ?",
+          "ਆਖ਼ਰੀ ਮਿਤੀ ਕਦੋਂ ਹੈ?"
+        ],
+        "as": [
+          "আবেদনৰ অন্তিম তাৰিখ কেতিয়া?",
+          "আবেদন জমা দিয়াৰ শেষ তাৰিখ কেতিয়া?",
+          "আবেদন কৰাৰ শেষ তাৰিখ কি?"
+        ],
+        "ne": [
+          "आवेदन दिने अन्तिम मिति कहिले हो?",
+          "आवेदन बुझाउने अन्तिम दिन कहिले हो?",
+          "अन्तिम मिति कहिले सम्म छ?"
+        ]
+      },
+      "answer": {
+        "en": "The application deadline is not specified in the available test information.",
+        "hi": "उपलब्ध परीक्षण जानकारी में आवेदन की अंतिम तिथि निर्दिष्ट नहीं है।",
+        "bn": "উপলব্ধ পরীক্ষামূলক তথ্যে আবেদনের শেষ তারিখ উল্লেখ করা হয়নি।",
+        "pa": "ਉਪਲਬਧ ਟੈਸਟ ਜਾਣਕਾਰੀ ਵਿੱਚ ਅਰਜ਼ੀ ਦੀ ਆਖ਼ਰੀ ਮਿਤੀ ਨਹੀਂ ਦਿੱਤੀ ਗਈ ਹੈ।",
+        "as": "উপলব্ধ পৰীক্ষামূলক তথ্যত আবেদনৰ অন্তিম তাৰিখ উল্লেখ কৰা হোৱা নাই।",
+        "ne": "उपलब्ध परीक्षण जानकारीमा आवेदन दिने अन्तिम मिति उल्लेख गरिएको छैन।"
+      },
+      "facts": [],
+      "source": {
+        "type": "project_test_fixture",
+        "reference": "KNOWLEDGE_BASE in original app.py"
+      },
+      "fictional": true,
+      "translation_status": "draft_unverified"
+    },
+    {
+      "id": "scholarship_amount",
+      "topic": "scholarship_amount",
+      "question_examples": {
+        "en": [
+          "How much money does the scholarship provide?",
+          "What is the scholarship amount?",
+          "Is the scholarship amount mentioned anywhere?"
+        ],
+        "hi": [
+          "इस छात्रवृत्ति में कितनी राशि मिलती है?",
+          "छात्रवृत्ति की राशि क्या है?",
+          "क्या छात्रवृत्ति की राशि बताई गई है?"
+        ],
+        "bn": [
+          "এই বৃত্তিতে কত টাকা দেওয়া হয়?",
+          "বৃত্তির টাকার পরিমাণ কত?",
+          "বৃত্তির টাকার পরিমাণ কি উল্লেখ করা হয়েছে?"
+        ],
+        "pa": [
+          "ਇਸ ਵਜ਼ੀਫ਼ੇ ਵਿੱਚ ਕਿੰਨੀ ਰਕਮ ਮਿਲਦੀ ਹੈ?",
+          "ਵਜ਼ੀਫ਼ੇ ਦੀ ਰਕਮ ਕਿੰਨੀ ਹੈ?",
+          "ਕੀ ਵਜ਼ੀਫ਼ੇ ਦੀ ਰਕਮ ਦੱਸੀ ਗਈ ਹੈ?"
+        ],
+        "as": [
+          "এই বৃত্তিত কিমান ধন দিয়া হয়?",
+          "বৃত্তিৰ ধনৰ পৰিমাণ কিমান?",
+          "বৃত্তিৰ ধনৰ পৰিমাণ উল্লেখ কৰা হৈছে নেকি?"
+        ],
+        "ne": [
+          "यस छात्रवृत्तिमा कति रकम दिइन्छ?",
+          "छात्रवृत्तिको रकम कति हो?",
+          "छात्रवृत्तिको रकम उल्लेख गरिएको छ?"
+        ]
+      },
+      "answer": {
+        "en": "The scholarship amount is not specified in the available test information.",
+        "hi": "उपलब्ध परीक्षण जानकारी में छात्रवृत्ति की राशि निर्दिष्ट नहीं है।",
+        "bn": "উপলব্ধ পরীক্ষামূলক তথ্যে বৃত্তির টাকার পরিমাণ উল্লেখ করা হয়নি।",
+        "pa": "ਉਪਲਬਧ ਟੈਸਟ ਜਾਣਕਾਰੀ ਵਿੱਚ ਵਜ਼ੀਫ਼ੇ ਦੀ ਰਕਮ ਨਹੀਂ ਦਿੱਤੀ ਗਈ ਹੈ।",
+        "as": "উপলব্ধ পৰীক্ষামূলক তথ্যত বৃত্তিৰ ধনৰ পৰিমাণ উল্লেখ কৰা হোৱা নাই।",
+        "ne": "उपलब्ध परीक्षण जानकारीमा छात्रवृत्तिको रकम उल्लेख गरिएको छैन।"
+      },
+      "facts": [],
+      "source": {
+        "type": "project_test_fixture",
+        "reference": "KNOWLEDGE_BASE in original app.py"
+      },
+      "fictional": true,
+      "translation_status": "draft_unverified"
+    },
+    {
+      "id": "eligibility",
+      "topic": "eligibility",
+      "question_examples": {
+        "en": [
+          "Who is eligible to apply for this scholarship?",
+          "What are the eligibility requirements?",
+          "Who can apply for this scholarship?"
+        ],
+        "hi": [
+          "इस छात्रवृत्ति के लिए कौन आवेदन कर सकता है?",
+          "पात्रता की शर्तें क्या हैं?",
+          "इस छात्रवृत्ति के लिए कौन पात्र है?"
+        ],
+        "bn": [
+          "এই বৃত্তির জন্য কারা আবেদন করতে পারেন?",
+          "যোগ্যতার শর্তাবলী কী?",
+          "কারা এই বৃত্তির যোগ্য?"
+        ],
+        "pa": [
+          "ਇਸ ਵਜ਼ੀਫ਼ੇ ਲਈ ਕੌਣ ਅਰਜ਼ੀ ਦੇ ਸਕਦਾ ਹੈ?",
+          "ਯੋਗਤਾ ਦੀਆਂ ਸ਼ਰਤਾਂ ਕੀ ਹਨ?",
+          "ਕੌਣ ਯੋਗ ਹੈ?"
+        ],
+        "as": [
+          "এই বৃত্তিৰ বাবে কোনে আবেদন কৰিব পাৰে?",
+          "যোগ্যতাৰ চৰ্তসমূহ কি?",
+          "কোনে এই বৃত্তি পাব পাৰে?"
+        ],
+        "ne": [
+          "यो छात्रवृत्तिका लागि कसले आवेदन दिन सक्छ?",
+          "योग्यताका सर्तहरू के के हुन्?",
+          "को योग्य छ?"
+        ]
+      },
+      "answer": {
+        "en": "The eligibility requirements are not specified in the available test information.",
+        "hi": "उपलब्ध परीक्षण जानकारी में पात्रता की शर्तें निर्दिष्ट नहीं हैं।",
+        "bn": "উপলব্ধ পরীক্ষামূলক তথ্যে যোগ্যতার শর্তগুলি উল্লেখ করা হয়নি।",
+        "pa": "ਉਪਲਬਧ ਟੈਸਟ ਜਾਣਕਾਰੀ ਵਿੱਚ ਯੋਗਤਾ ਦੀਆਂ ਸ਼ਰਤਾਂ ਨਹੀਂ ਦਿੱਤੀਆਂ ਗਈਆਂ ਹਨ।",
+        "as": "উপলব্ধ পৰীক্ষামূলক তথ্যত যোগ্যতাৰ চৰ্তসমূহ উল্লেখ কৰা হোৱা নাই।",
+        "ne": "उपलब्ध परीक्षण जानकारीमा योग्यताका सर्तहरू उल्लेख गरिएका छैनन्।"
+      },
+      "facts": [],
+      "source": {
+        "type": "project_test_fixture",
+        "reference": "KNOWLEDGE_BASE in original app.py"
+      },
+      "fictional": true,
+      "translation_status": "draft_unverified"
+    },
+    {
+      "id": "application_method",
+      "topic": "application_method",
+      "question_examples": {
+        "en": [
+          "How do I submit my application?",
+          "Where should I apply?",
+          "What is the process to apply?"
+        ],
+        "hi": [
+          "मैं अपना आवेदन कैसे जमा करूँ?",
+          "मुझे आवेदन कहाँ और कैसे करना चाहिए?",
+          "आवेदन करने की प्रक्रिया क्या है?"
+        ],
+        "bn": [
+          "আমি কীভাবে আবেদন জমা দেব?",
+          "কোথায় আবেদন করতে হবে?",
+          "আবেদন করার পদ্ধতি কী?"
+        ],
+        "pa": [
+          "ਮੈਂ ਆਪਣੀ ਅਰਜ਼ੀ ਕਿਵੇਂ ਜਮ੍ਹਾਂ ਕਰਵਾਵਾਂ?",
+          "ਅਰਜ਼ੀ ਕਿੱਥੇ ਜਮ੍ਹਾਂ ਕਰਵਾਉਣੀ ਹੈ?",
+          "ਅਰਜ਼ੀ ਦੇਣ ਦੀ ਪ੍ਰਕਿਰਿਆ ਕੀ ਹੈ?"
+        ],
+        "as": [
+          "মই কেনেকৈ আবেদন জমা দিম?",
+          "ক’ত আবেদন কৰিব লাগিব?",
+          "আবেদন কৰাৰ প্ৰক্ৰিয়া কি?"
+        ],
+        "ne": [
+          "मैले आवेदन कसरी बुझाउने?",
+          "आवेदन कहाँ बुझाउने?",
+          "आवेदन गर्ने प्रक्रिया के हो?"
+        ]
+      },
+      "answer": {
+        "en": "The application method is not specified in the available test information.",
+        "hi": "उपलब्ध परीक्षण जानकारी में आवेदन करने की प्रक्रिया निर्दिष्ट नहीं है।",
+        "bn": "উপলব্ধ পরীক্ষামূলক তথ্যে আবেদন করার পদ্ধতি উল্লেখ করা হয়নি।",
+        "pa": "ਉਪਲਬਧ ਟੈਸਟ ਜਾਣਕਾਰੀ ਵਿੱਚ ਅਰਜ਼ੀ ਦੇਣ ਦਾ ਤਰੀਕਾ ਨਹੀਂ ਦਿੱਤਾ ਗਿਆ ਹੈ।",
+        "as": "উপলব্ধ পৰীক্ষামূলক তথ্যত আবেদন কৰাৰ পদ্ধতি উল্লেখ কৰা হোৱা নাই।",
+        "ne": "उपलब्ध परीक्षण जानकारीमा आवेदन दिने तरिका उल्लेख गरिएको छैन।"
+      },
+      "facts": [],
+      "source": {
+        "type": "project_test_fixture",
+        "reference": "KNOWLEDGE_BASE in original app.py"
+      },
+      "fictional": true,
+      "translation_status": "draft_unverified"
+    },
+    {
+      "id": "contact_information",
+      "topic": "contact_information",
+      "question_examples": {
+        "en": [
+          "Who should I contact for help with the application?",
+          "What is the contact information?",
+          "Is there a helpline number or email address?"
+        ],
+        "hi": [
+          "आवेदन में मदद के लिए मुझे किससे संपर्क करना चाहिए?",
+          "क्या कोई संपर्क नंबर या हेल्पलाइन है?",
+          "संपर्क विवरण क्या है?"
+        ],
+        "bn": [
+          "আবেদনের বিষয়ে সাহায্যের জন্য কার সঙ্গে যোগাযোগ করব?",
+          "যোগাযোগের কোনো হেল্পলাইন বা ইমেল আছে কি?",
+          "যোগাযোগের বিবরণ কী?"
+        ],
+        "pa": [
+          "ਅਰਜ਼ੀ ਲਈ ਮਦਦ ਵਾਸਤੇ ਮੈਨੂੰ ਕਿਸ ਨਾਲ ਸੰਪਰਕ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ?",
+          "ਕੀ ਕੋਈ ਹੈਲਪਲਾਈਨ ਨੰਬਰ ਜਾਂ ਈਮੇਲ ਹੈ?",
+          "ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਕੀ ਹੈ?"
+        ],
+        "as": [
+          "আবেদনৰ সহায়ৰ বাবে মই কাৰ সৈতে যোগাযোগ কৰিম?",
+          "যোগাযোগৰ বাবে কোনো হেল্পলাইন বা ইমেইল আছে নেকি?",
+          "যোগাযোগৰ তথ্য কি?"
+        ],
+        "ne": [
+          "आवेदनमा सहयोगका लागि मैले कसलाई सम्पर्क गर्ने?",
+          "सम्पर्कका लागि कुनै हेल्पलाइन वा इमेल छ?",
+          "सम्पर्क विवरण के हो?"
+        ]
+      },
+      "answer": {
+        "en": "Contact information is not specified in the available test information.",
+        "hi": "उपलब्ध परीक्षण जानकारी में संपर्क विवरण निर्दिष्ट नहीं है।",
+        "bn": "উপলব্ধ পরীক্ষামূলক তথ্যে যোগাযোগের বিবরণ উল্লেখ করা হয়নি।",
+        "pa": "ਉਪਲਬਧ ਟੈਸਟ ਜਾਣਕਾਰੀ ਵਿੱਚ ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਨਹੀਂ ਦਿੱਤੀ ਗਈ ਹੈ।",
+        "as": "উপলব্ধ পৰীক্ষামূলক তথ্যত যোগাযোগৰ তথ্য উল্লেখ কৰা হোৱা নাই।",
+        "ne": "उपलब्ध परीक्षण जानकारीमा सम्पर्क विवरण उल्लेख गरिएको छैन।"
+      },
+      "facts": [],
+      "source": {
+        "type": "project_test_fixture",
+        "reference": "KNOWLEDGE_BASE in compare_models.py"
+      },
+      "fictional": true,
+      "translation_status": "draft_unverified"
+    }
+  ]
+}

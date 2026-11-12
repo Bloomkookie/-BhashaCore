@@ -1,0 +1,53 @@
+
+[
+  {
+    "id": 1,
+    "topic": "required_documents",
+    "question_en": "What documents are required for the scholarship?",
+    "question_hi": "छात्रवृत्ति के लिए कौन से दस्तावेज़ आवश्यक हैं?",
+    "question_bn": "বৃত্তির জন্য কোন কোন নথি প্রয়োজন?",
+    "question_pa": "ਵਜ਼ੀਫ਼ੇ ਲਈ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਲੋੜੀਂਦੇ ਹਨ?",
+    "question_as": "বৃত্তিৰ বাবে কি কি নথি-পত্ৰৰ প্ৰয়োজন?",
+    "question_ne": "छात्रवृत्तिका लागि कुन-कुन कागजात चाहिन्छ?",
+    "expected_facts": [
+      "identity document",
+      "proof of enrollment",
+      "recent academic record",
+      "bank account details"
+    ],
+    "must_not_invent": [
+      "application deadline",
+      "scholarship amount"
+    ]
+  },
+  {
+    "id": 2,
+    "topic": "application_deadline",
+    "question_en": "What is the application deadline?",
+    "question_hi": "आवेदन की अंतिम तिथि क्या है?",
+    "question_bn": "আবেদনের শেষ তারিখ কী?",
+    "question_pa": "ਅਰਜ਼ੀ ਦੇਣ ਦੀ ਆਖ਼ਰੀ ਮਿਤੀ ਕੀ ਹੈ?",
+    "question_as": "আবেদনৰ অন্তিম তাৰিখ কেতিয়া?",
+    "question_ne": "आवेदन दिने अन्तिम मिति कहिले हो?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "application deadline"
+    ],
+    "expected_behavior": "Say the deadline is not specified in the available information."
+  },
+  {
+    "id": 3,
+    "topic": "scholarship_amount",
+    "question_en": "How much money does the scholarship provide?",
+    "question_hi": "इस छात्रवृत्ति में कितनी राशि मिलती है?",
+    "question_bn": "এই বৃত্তিতে কত টাকা দেওয়া হয়?",
+    "question_pa": "ਇਸ ਵਜ਼ੀਫ਼ੇ ਵਿੱਚ ਕਿੰਨੀ ਰਕਮ ਮਿਲਦੀ ਹੈ?",
+    "question_as": "এই বৃত্তিত কিমান ধন দিয়া হয়?",
+    "question_ne": "यस छात्रवृत्तिमा कति रकम दिइन्छ?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "scholarship amount"
+    ],
+    "expected_behavior": "Say the scholarship amount is not specified in the available information."
+  }
+]

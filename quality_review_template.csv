@@ -1,0 +1,45 @@
+﻿test_id,language,question,answer,topic,expected_facts,must_not_invent,expected_behavior,status,factual_correctness,completeness,language_quality,hallucination,overall_pass,review_notes
+1,English,What documents are required for the scholarship?,"For the scholarship, you need the following documents:
+
+- Identity document
+- Proof of enrollment
+- Recent academic record
+- Bank account details",required_documents,"[""identity document"", ""proof of enrollment"", ""recent academic record"", ""bank account details""]","[""application deadline"", ""scholarship amount""]",,success,,,,,,
+2,English,What is the application deadline?,The application deadline is unspecified.,application_deadline,[],"[""application deadline""]",Say the deadline is not specified in the available information.,success,,,,,,
+3,English,How much money does the scholarship provide?,The scholarship amount is unspecified in this fictional test information.,scholarship_amount,[],"[""scholarship amount""]",Say the scholarship amount is not specified in the available information.,success,,,,,,
+1,Hindi,छात्रवृत्ति के लिए कौन से दस्तावेज़ आवश्यक हैं?,"छात्रवृत्ति के लिए आवश्यक दस्तावेज़ निम्न हैं:
+
+1. आधारित डिवाइस
+2. इन्सालेब्लिटी की सिद्धि के लिए दस्तावेज
+3. अंतिम अकादमिक रिकॉर्ड
+4. बैंक की खाता जानकारी
+
+ये दस्तावेज़ छात्रवृत्ति के लिए आवश्यक हैं।",required_documents,"[""identity document"", ""proof of enrollment"", ""recent academic record"", ""bank account details""]","[""application deadline"", ""scholarship amount""]",,success,,,,,,
+2,Hindi,आवेदन की अंतिम तिथि क्या है?,आवेदन की अंतिम तिथि निर्धारित नहीं हुई है। आप इलाके में अन्य जानकारी प्राप्त करने के लिए अनुसरण करें।,application_deadline,[],"[""application deadline""]",Say the deadline is not specified in the available information.,success,,,,,,
+3,Hindi,इस छात्रवृत्ति में कितनी राशि मिलती है?,"इस छात्रवृत्ति में राशि कितनी है वह निर्धारित नहीं की गई है। आप इलेक्ट्रॉनिक रिपोर्ट, यूनिवर्सिटी डिवाइस, यूनिवर्सिटी एन्टर्नेस डिवाइस और बैंक कॉर्टेड डिवाइस के लिए अनुशासनीय डेटा की तरफ से जानकारी प्राप्त",scholarship_amount,[],"[""scholarship amount""]",Say the scholarship amount is not specified in the available information.,success,,,,,,
+1,Bengali,বৃত্তির জন্য কোন কোন নথি প্রয়োজন?,বৃত্তি প্রার্থনার জন্য নোটিভেট প্রয়োজন নেই। এই সাহিত্যিক তত্ত্বাবধানটি ব্যাপকভাবে ব্যবহার করা হয়নি। আপনি সাহিত্যিক তত্ত্বাবধান থেকে বিশেষভাবে কোনও নথি প্রয়োজন নেই। আপনি সাহিত্যিক তত্ত্বাবধ,required_documents,"[""identity document"", ""proof of enrollment"", ""recent academic record"", ""bank account details""]","[""application deadline"", ""scholarship amount""]",,success,,,,,,
+2,Bengali,আবেদনের শেষ তারিখ কী?,"আবেদনের শেষ তারিখ নির্ধারণ করা হয়নি। আবেদন শুরু হতে পারে আজ বা আগে, কিন্তু শেষ তারিখ নেই। আবেদনকারীরা আবেদনের সময় ব্যয় করতে পারেন।",application_deadline,[],"[""application deadline""]",Say the deadline is not specified in the available information.,success,,,,,,
+3,Bengali,এই বৃত্তিতে কত টাকা দেওয়া হয়?,এই বৃত্তিতে সাহসিত পোস্ট বাক্যে কোন টাকা দেওয়ার জন্য প্রয়োজনীয় তথ্য ছিল না। এটি ব্যাপকভাবে একটি ফাইস্ট সাহসিত পোস্ট বৃত্তি ছিল। সুতরাং আপনি এই বৃত্তির মধ্যে কোন টাকা বা পুরস্কার নেওয,scholarship_amount,[],"[""scholarship amount""]",Say the scholarship amount is not specified in the available information.,success,,,,,,
+1,Punjabi,ਵਜ਼ੀਫ਼ੇ ਲਈ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਲੋੜੀਂਦੇ ਹਨ?,ਵਜ਼ੀਫ਼ੇ ਲਈ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਨਹੀਂ ਲੋੜਦੇ ਹਨ। ਇਸ ਵਿੱਚ ਵਿਕਾਸਤਾਂ ਅਤੇ ਸ਼ਾਹਿਰੀ ਸਿਖਰਾਲਾ ਸ਼ਾਹਿਰੀ ਨਿਕਲਣ ਲਈ ਸ਼ਾਹਿਰੀ ਸਿਖਰਾਲਾ ਸ਼ਾਹਿਰੀ ਹੈ। ਇਸ ਨਿ,required_documents,"[""identity document"", ""proof of enrollment"", ""recent academic record"", ""bank account details""]","[""application deadline"", ""scholarship amount""]",,success,,,,,,
+2,Punjabi,ਅਰਜ਼ੀ ਦੇਣ ਦੀ ਆਖ਼ਰੀ ਮਿਤੀ ਕੀ ਹੈ?,ਅਰਜ਼ੀ ਦੇਣ ਦੀ ਆਖ਼ਰੀ ਮਿਤੀ ਅਸੀਂ ਨਿਕਾਰਾਂ ਨਹੀਂ ਹੈ ਕਿਨਾ ਅਰਜ਼ੀ ਦੇਣ ਲਈ ਮਿਤੀ ਹੈ ਕੋਈ ਨਹੀਂ। ਅਰਜ਼ੀ ਦੇਣ ਦੀ ਆਖ਼ਰੀ ਮਿਤੀ ਅਸੀਂ ਨਿਰਦੇਸ਼ਨ ਅਤੇ ਵਿਸ਼ੇਸ਼ਤ ਵਿ,application_deadline,[],"[""application deadline""]",Say the deadline is not specified in the available information.,success,,,,,,
+3,Punjabi,ਇਸ ਵਜ਼ੀਫ਼ੇ ਵਿੱਚ ਕਿੰਨੀ ਰਕਮ ਮਿਲਦੀ ਹੈ?,ਇਸ ਵਜ਼ੀਫ਼ੇ ਵਿੱਚ ਮਿਲਦੀ ਹੈ ਨਿਯੰਤਰਨ ਦੇ ਰਕਮ ਨਹੀਂ ਹੈ।,scholarship_amount,[],"[""scholarship amount""]",Say the scholarship amount is not specified in the available information.,success,,,,,,
+1,Assamese,বৃত্তিৰ বাবে কি কি নথি-পত্ৰৰ প্ৰয়োজন?,"বৃত্তিৰ জন্য নিমিত্ত নথি-পত্ৰৰ প্ৰয়োজন হৈ আছে:
+
+1. আইডিয়াম দোকান
+2. আন্তৰীণ প্ৰমাণ
+3. আগুন শিক্ষা প্ৰমাণ
+4. বানান অফিসের নথি
+
+এই নথি-পত্ৰ�ৰ প্ৰয়োজনৰ কথা বুঝি পৰা পাৰোৱা হৈ",required_documents,"[""identity document"", ""proof of enrollment"", ""recent academic record"", ""bank account details""]","[""application deadline"", ""scholarship amount""]",,success,,,,,,
+2,Assamese,আবেদনৰ অন্তিম তাৰিখ কেতিয়া?,আবেদনৰ অন্তিম তাৰিখ কেতিয়া হৈ আৰু সকল অন্তিম তাৰিখ অনুযায়ী আবেদন কৰা হৈ হোৱা হৈ পৰিছিল। আই হৈ অনুচিত তাৰিখ আৰু সকল অনুচিত অন্তিম তাৰিখ দেখাৰ জন্য আবেদনীকৃত বাবৰ সমূহক সাহ,application_deadline,[],"[""application deadline""]",Say the deadline is not specified in the available information.,success,,,,,,
+3,Assamese,এই বৃত্তিত কিমান ধন দিয়া হয়?,"এই বৃত্তিত ধন দিতে হয় নাই। এটি ফাইশন্যাল টেস্ট ইনফরমেশন আহা, আমের বৈজাগত পরিসংঘাতিক প্রক্রিয়াদের জন্য নহে। স্কুল প্রতিস্থাপন প্রশ্নটি সমাধান করা যায় না, কারণ ধন দিতে হয় নাই।",scholarship_amount,[],"[""scholarship amount""]",Say the scholarship amount is not specified in the available information.,success,,,,,,
+1,Nepali,छात्रवृत्तिका लागि कुन-कुन कागजात चाहिन्छ?,"छात्रवृत्तिका लागि कुन-कुन कागजात निम्नकारक चाहिन्छ:
+
+1. आयده पत्र
+2. योग्यता पत्र
+3. अध्ययन रिकॉर्ड
+4. बैंक अकाउंट डेटाबुक
+
+यो छात्रवृत्तिका लागि चाहिन्छ छ।",required_documents,"[""identity document"", ""proof of enrollment"", ""recent academic record"", ""bank account details""]","[""application deadline"", ""scholarship amount""]",,success,,,,,,
+2,Nepali,आवेदन दिने अन्तिम मिति कहिले हो?,आवेदन दिने अन्तिम मिति निर्धारण नेहमी छ। यो निर्धारण नेहमी अन्तर्राष्ट्रिक साहित्यिक अर्थव्यवस्था गरिबी र विद्यार्थीको लाभ गर्न लागती हो।,application_deadline,[],"[""application deadline""]",Say the deadline is not specified in the available information.,success,,,,,,
+3,Nepali,यस छात्रवृत्तिमा कति रकम दिइन्छ?,"यस छात्रवृत्तिमा रकम दिएको छैन। यस छात्रवृत्तिमा बेजूक तस्वीर छ। यदि थप छ, तब अनुमति दिनुपर्छ।",scholarship_amount,[],"[""scholarship amount""]",Say the scholarship amount is not specified in the available information.,success,,,,,,

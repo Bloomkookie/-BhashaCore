@@ -1,0 +1,181 @@
+[
+  {
+    "id": "docs_01",
+    "topic": "required_documents",
+    "question_en": "What documents are required for the scholarship?",
+    "question_hi": "छात्रवृत्ति के लिए कौन-कौन से दस्तावेज़ आवश्यक हैं?",
+    "question_bn": "বৃত্তির জন্য কোন কোন নথি প্রয়োজন?",
+    "question_pa": "ਵਜ਼ੀਫ਼ੇ ਲਈ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਲੋੜੀਂਦੇ ਹਨ?",
+    "question_as": "বৃত্তিৰ বাবে কি কি নথি-পত্ৰৰ প্ৰয়োজন?",
+    "question_ne": "छात्रवृत्तिका लागि कुन-कुन कागजात चाहिन्छ?",
+    "expected_facts": [
+      "identity document",
+      "proof of enrollment",
+      "recent academic record",
+      "bank account details"
+    ],
+    "must_not_invent": [
+      "application deadline",
+      "scholarship amount"
+    ],
+    "expected_behavior": "List all four required documents; do not add requirements."
+  },
+  {
+    "id": "docs_02",
+    "topic": "required_documents",
+    "question_en": "Please list every document I need to provide.",
+    "question_hi": "कृपया उन सभी दस्तावेज़ों की सूची दें जिन्हें मुझे जमा करना होगा।",
+    "question_bn": "আমাকে জমা দিতে হবে এমন সব নথির তালিকা দিন।",
+    "question_pa": "ਕਿਰਪਾ ਕਰਕੇ ਉਹ ਸਾਰੇ ਦਸਤਾਵੇਜ਼ ਦੱਸੋ ਜੋ ਮੈਨੂੰ ਜਮ੍ਹਾਂ ਕਰਵਾਉਣੇ ਹਨ।",
+    "question_as": "মই জমা দিবলগীয়া সকলো নথি-পত্ৰৰ তালিকা দিয়ক।",
+    "question_ne": "मैले बुझाउनुपर्ने सबै कागजातको सूची दिनुहोस्।",
+    "expected_facts": [
+      "identity document",
+      "proof of enrollment",
+      "recent academic record",
+      "bank account details"
+    ],
+    "must_not_invent": [
+      "application deadline",
+      "scholarship amount"
+    ],
+    "expected_behavior": "List all four required documents; do not add requirements."
+  },
+  {
+    "id": "deadline_01",
+    "topic": "application_deadline",
+    "question_en": "What is the application deadline?",
+    "question_hi": "आवेदन की अंतिम तिथि क्या है?",
+    "question_bn": "আবেদনের শেষ তারিখ কী?",
+    "question_pa": "ਅਰਜ਼ੀ ਦੇਣ ਦੀ ਆਖ਼ਰੀ ਮਿਤੀ ਕੀ ਹੈ?",
+    "question_as": "আবেদনৰ অন্তিম তাৰিখ কেতিয়া?",
+    "question_ne": "आवेदन दिने अन्तिम मिति कहिले हो?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "any specific date",
+      "application start date"
+    ],
+    "expected_behavior": "Clearly state that the deadline is unspecified."
+  },
+  {
+    "id": "deadline_02",
+    "topic": "application_deadline",
+    "question_en": "When do applications close?",
+    "question_hi": "आवेदन जमा करने की आखिरी तारीख कब है?",
+    "question_bn": "আবেদন জমা দেওয়ার শেষ সময় কখন?",
+    "question_pa": "ਅਰਜ਼ੀਆਂ ਜਮ੍ਹਾਂ ਕਰਵਾਉਣ ਦੀ ਆਖ਼ਰੀ ਤਾਰੀਖ ਕਦੋਂ ਹੈ?",
+    "question_as": "আবেদন জমা দিয়াৰ শেষ তাৰিখ কেতিয়া?",
+    "question_ne": "आवेदन बुझाउने अन्तिम दिन कहिले हो?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "any specific date",
+      "application start date"
+    ],
+    "expected_behavior": "Clearly state that the deadline is unspecified."
+  },
+  {
+    "id": "amount_01",
+    "topic": "scholarship_amount",
+    "question_en": "How much money does the scholarship provide?",
+    "question_hi": "इस छात्रवृत्ति में कितनी राशि मिलती है?",
+    "question_bn": "এই বৃত্তিতে কত টাকা দেওয়া হয়?",
+    "question_pa": "ਇਸ ਵਜ਼ੀਫ਼ੇ ਵਿੱਚ ਕਿੰਨੀ ਰਕਮ ਮਿਲਦੀ ਹੈ?",
+    "question_as": "এই বৃত্তিত কিমান ধন দিয়া হয়?",
+    "question_ne": "यस छात्रवृत्तिमा कति रकम दिइन्छ?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "any monetary amount",
+      "currency"
+    ],
+    "expected_behavior": "Clearly state that the scholarship amount is unspecified."
+  },
+  {
+    "id": "amount_02",
+    "topic": "scholarship_amount",
+    "question_en": "Is the scholarship amount mentioned anywhere?",
+    "question_hi": "क्या छात्रवृत्ति की राशि बताई गई है?",
+    "question_bn": "বৃত্তির টাকার পরিমাণ কি উল্লেখ করা হয়েছে?",
+    "question_pa": "ਕੀ ਵਜ਼ੀਫ਼ੇ ਦੀ ਰਕਮ ਦੱਸੀ ਗਈ ਹੈ?",
+    "question_as": "বৃত্তিৰ ধনৰ পৰিমাণ উল্লেখ কৰা হৈছে নেকি?",
+    "question_ne": "छात्रवृत्तिको रकम उल्लेख गरिएको छ?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "any monetary amount",
+      "currency"
+    ],
+    "expected_behavior": "Clearly state that the scholarship amount is unspecified."
+  },
+  {
+    "id": "eligibility_01",
+    "topic": "eligibility",
+    "question_en": "Who is eligible to apply for this scholarship?",
+    "question_hi": "इस छात्रवृत्ति के लिए कौन आवेदन कर सकता है?",
+    "question_bn": "এই বৃত্তির জন্য কারা আবেদন করতে পারেন?",
+    "question_pa": "ਇਸ ਵਜ਼ੀਫ਼ੇ ਲਈ ਕੌਣ ਅਰਜ਼ੀ ਦੇ ਸਕਦਾ ਹੈ?",
+    "question_as": "এই বৃত্তিৰ বাবে কোনে আবেদন কৰিব পাৰে?",
+    "question_ne": "यो छात्रवृत्तिका लागि कसले आवेदन दिन सक्छ?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "age limits",
+      "income limits",
+      "academic eligibility rules",
+      "citizenship requirements"
+    ],
+    "expected_behavior": "State that eligibility criteria are not provided in the available information."
+  },
+  {
+    "id": "process_01",
+    "topic": "application_method",
+    "question_en": "How do I submit my application?",
+    "question_hi": "मैं अपना आवेदन कैसे जमा करूँ?",
+    "question_bn": "আমি কীভাবে আবেদন জমা দেব?",
+    "question_pa": "ਮੈਂ ਆਪਣੀ ਅਰਜ਼ੀ ਕਿਵੇਂ ਜਮ੍ਹਾਂ ਕਰਵਾਵਾਂ?",
+    "question_as": "মই কেনেকৈ আবেদন জমা দিম?",
+    "question_ne": "मैले आवेदन कसरी बुझाउने?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "website URL",
+      "office address",
+      "submission method",
+      "application portal"
+    ],
+    "expected_behavior": "State that the application method is not specified."
+  },
+  {
+    "id": "contact_01",
+    "topic": "contact_information",
+    "question_en": "Who should I contact for help with the application?",
+    "question_hi": "आवेदन में मदद के लिए मुझे किससे संपर्क करना चाहिए?",
+    "question_bn": "আবেদনের বিষয়ে সাহায্যের জন্য কার সঙ্গে যোগাযোগ করব?",
+    "question_pa": "ਅਰਜ਼ੀ ਲਈ ਮਦਦ ਵਾਸਤੇ ਮੈਨੂੰ ਕਿਸ ਨਾਲ ਸੰਪਰਕ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ?",
+    "question_as": "আবেদনৰ সহায়ৰ বাবে মই কাৰ সৈতে যোগাযোগ কৰিম?",
+    "question_ne": "आवेदनमा सहयोगका लागि मैले कसलाई सम्पर्क गर्ने?",
+    "expected_facts": [],
+    "must_not_invent": [
+      "phone number",
+      "email address",
+      "office address",
+      "contact person"
+    ],
+    "expected_behavior": "State that contact information is not provided."
+  },
+  {
+    "id": "docs_03",
+    "topic": "required_documents",
+    "question_en": "Do I need to provide bank account details?",
+    "question_hi": "क्या मुझे बैंक खाते का विवरण देना होगा?",
+    "question_bn": "আমাকে কি ব্যাঙ্ক অ্যাকাউন্টের তথ্য দিতে হবে?",
+    "question_pa": "ਕੀ ਮੈਨੂੰ ਬੈਂਕ ਖਾਤੇ ਦੇ ਵੇਰਵੇ ਦੇਣੇ ਪੈਣਗੇ?",
+    "question_as": "মই বেংক একাউণ্টৰ তথ্য দিব লাগিবনে?",
+    "question_ne": "के मैले बैंक खाताको विवरण दिनुपर्छ?",
+    "expected_facts": [
+      "bank account details"
+    ],
+    "must_not_invent": [
+      "bank name",
+      "account number",
+      "IFSC or routing code"
+    ],
+    "expected_behavior": "Confirm that bank account details are required; do not invent specific banking details."
+  }
+]
