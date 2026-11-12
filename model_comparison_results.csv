@@ -1,0 +1,13 @@
+﻿test_id,topic,language,model,question,answer,status,latency_ms,error,timestamp
+docs_01,required_documents,English,qwen2.5:3b,What documents are required for the scholarship?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Hindi,qwen2.5:3b,छात्रवृत्ति के लिए कौन-कौन से दस्तावेज़ आवश्यक हैं?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Bengali,qwen2.5:3b,বৃত্তির জন্য কোন কোন নথি প্রয়োজন?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Punjabi,qwen2.5:3b,ਵਜ਼ੀਫ਼ੇ ਲਈ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਲੋੜੀਂਦੇ ਹਨ?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Assamese,qwen2.5:3b,বৃত্তিৰ বাবে কি কি নথি-পত্ৰৰ প্ৰয়োজন?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Nepali,qwen2.5:3b,छात्रवृत्तिका लागि कुन-कुन कागजात चाहिन्छ?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,English,gemma3:4b,What documents are required for the scholarship?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Hindi,gemma3:4b,छात्रवृत्ति के लिए कौन-कौन से दस्तावेज़ आवश्यक हैं?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Bengali,gemma3:4b,বৃত্তির জন্য কোন কোন নথি প্রয়োজন?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Punjabi,gemma3:4b,ਵਜ਼ੀਫ਼ੇ ਲਈ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਲੋੜੀਂਦੇ ਹਨ?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Assamese,gemma3:4b,বৃত্তিৰ বাবে কি কি নথি-পত্ৰৰ প্ৰয়োজন?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30
+docs_01,required_documents,Nepali,gemma3:4b,छात्रवृत्तिका लागि कुन-कुन कागजात चाहिन्छ?,,error,0.0,Ollama daemon unreachable (offline test),2026-11-12T23:42:30

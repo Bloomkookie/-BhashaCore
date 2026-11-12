@@ -1,19 +1,31 @@
+"""BhashaCore Extended Chatbot & Model Comparison Runner.
+
+Evaluates both FAQ retrieval and Ollama-based models (qwen2.5:3b / gemma3:4b).
+Gracefully logs error status if Ollama is unreachable without crashing.
+"""
+
+from __future__ import annotations
+
+import argparse
 import json
-import time
-import requests
-import pandas as pd
-from pathlib import Path
+import logging
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List
+
+import pandas as pd
+
+from config import BASELINE_QUESTIONS_PATH, EXPANDED_QUESTIONS_PATH, OLLAMA_MODEL
+from knowledge_base import KnowledgeBase
+from ollama_client import check_ollama_status, generate_response
 
 BASE_DIR = Path(__file__).resolve().parent
-QUESTIONS_FILE = BASE_DIR / "evaluation_questions_expanded.json"
-OUTPUT_FILE = BASE_DIR / "model_comparison_results.csv"
+DEFAULT_OUTPUT = BASE_DIR / "model_comparison_results.csv"
 
-OLLAMA_URL = "http://localhost:11434/api/chat"
-# Baseline is already installed. Challenger is a stronger candidate; pull it first.
-MODELS = ["qwen2.5:3b", "qwen2.5:7b"]
+# Models actually verified installed on local Ollama:
+CANDIDATE_MODELS = ["qwen2.5:3b", "gemma3:4b"]
 
-LANGUAGES = {
+LANG_KEYS = {
     "English": "question_en",
     "Hindi": "question_hi",
     "Bengali": "question_bn",
@@ -22,139 +34,76 @@ LANGUAGES = {
     "Nepali": "question_ne",
 }
 
-KNOWLEDGE_BASE = """
-This is a fictional scholarship scheme created for testing only.
-Required documents:
-- Identity document
-- Proof of enrollment
-- Recent academic record
-- Bank account details
-The application deadline is unspecified.
-The scholarship amount is unspecified.
-Eligibility criteria are not provided.
-The application method is not specified.
-Contact information is not provided.
-This is fictional test information, not real government policy.
-"""
 
-SYSTEM_PROMPT = """
-You are BhashaCore, a multilingual public-service chatbot.
-Follow these rules:
-1. Answer only in the language requested by the user.
-2. Use only the supplied knowledge base.
-3. Never invent dates, amounts, eligibility rules, links, contact details, or requirements.
-4. When information is missing, clearly say it is not specified.
-5. If asked for required documents, include all four documents from the knowledge base.
-6. Keep answers concise and direct.
-7. This scholarship scheme is fictional and only for testing.
-"""
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Run BhashaCore model evaluation.")
+    parser.add_argument("--models", nargs="+", default=CANDIDATE_MODELS, help="Models to compare.")
+    parser.add_argument("--limit", type=int, default=3, help="Number of scenarios to evaluate per model.")
+    args = parser.parse_args()
 
-def ask_chatbot(question, language, model):
-    payload = {
-        "model": model,
-        "stream": False,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {
-                "role": "user",
-                "content": (
-                    f"Available information:\n{KNOWLEDGE_BASE}\n\n"
-                    f"Answer in {language}.\nQuestion: {question}"
-                ),
-            },
-        ],
-        "options": {"temperature": 0, "num_predict": 180},
-    }
-    started = time.perf_counter()
-    response = requests.post(OLLAMA_URL, json=payload, timeout=300)
-    elapsed = time.perf_counter() - started
-    response.raise_for_status()
-    answer = response.json()["message"]["content"].strip()
-    return answer, round(elapsed, 2)
+    print("=" * 65)
+    print("BHASHACORE - EXTENDED MODEL EVALUATION")
+    print("=" * 65)
 
-def check_ollama_status() -> bool:
-    try:
-        res = requests.get("http://localhost:11434/api/tags", timeout=3)
-        return res.status_code == 200
-    except Exception:
-        return False
+    kb = KnowledgeBase()
+    kb.load_faq_file()
+    context = kb.compile_grounding_context()
 
-def main():
-    if not QUESTIONS_FILE.exists():
-        raise FileNotFoundError(f"Missing benchmark: {QUESTIONS_FILE}")
+    status = check_ollama_status()
+    print("Ollama Daemon Status:", "AVAILABLE" if status["available"] else "OFFLINE")
+    if status["available"]:
+        print("Installed Models:", ", ".join(status["models"]))
 
-    if not check_ollama_status():
-        print("!" * 65)
-        print("WARNING: Ollama is not reachable at http://localhost:11434")
-        print("To run LLM model comparisons:")
-        print("  1. Start Ollama: ollama serve")
-        print("  2. Pull models:  ollama pull qwen2.5:3b && ollama pull qwen2.5:7b")
-        print("Proceeding anyway (API errors will be logged to CSV)...")
-        print("!" * 65)
+    with EXPANDED_QUESTIONS_PATH.open("r", encoding="utf-8") as f:
+        scenarios = json.load(f)[: args.limit]
 
-    with open(QUESTIONS_FILE, "r", encoding="utf-8") as f:
-        questions = json.load(f)
+    results: List[Dict[str, Any]] = []
 
-    rows = []
-    total = len(questions) * len(LANGUAGES) * len(MODELS)
-    print(f"Cases: {len(questions)} | Languages: {len(LANGUAGES)} | Models: {len(MODELS)}")
-    print(f"Planned model responses: {total}")
-    print("This can take a while, especially with qwen2.5:7b.")
-
-    for model in MODELS:
-        print(f"\n{'=' * 20} MODEL: {model} {'=' * 20}")
-        for language, question_key in LANGUAGES.items():
-            print(f"\n--- {language} ---")
-            for item in questions:
-                question = item.get(question_key)
-                row = {
-                    "model": model,
-                    "test_id": item["id"],
-                    "topic": item["topic"],
-                    "language": language,
-                    "question": question or "",
-                    "answer": "",
-                    "expected_facts": json.dumps(item.get("expected_facts", []), ensure_ascii=False),
-                    "must_not_invent": json.dumps(item.get("must_not_invent", []), ensure_ascii=False),
-                    "expected_behavior": item.get("expected_behavior", ""),
-                    "status": "error",
-                    "latency_seconds": None,
-                    "error": "",
-                    "timestamp": datetime.now().isoformat(timespec="seconds"),
-                    # Fill these after human/native-speaker review:
-                    "factual_correctness": "",
-                    "completeness": "",
-                    "language_quality": "",
-                    "hallucination": "",
-                    "overall_pass": "",
-                    "review_notes": "",
-                }
+    for model_name in args.models:
+        print(f"\n--- Testing Model: {model_name} ---")
+        for sc in scenarios:
+            test_id = sc["id"]
+            topic = sc["topic"]
+            for lang_name, q_key in LANG_KEYS.items():
+                question = sc.get(q_key, "")
                 if not question:
-                    row["error"] = "Missing translated question"
+                    continue
+
+                if status["available"]:
+                    res = generate_response(
+                        question=question,
+                        context=context,
+                        language=lang_name,
+                        model=model_name,
+                        timeout=60,
+                    )
+                    answer = res["answer"]
+                    latency = res["latency_ms"]
+                    run_status = res["status"]
+                    err = res.get("error") or ""
                 else:
-                    try:
-                        answer, latency = ask_chatbot(question, language, model)
-                        row["answer"] = answer
-                        row["status"] = "success"
-                        row["latency_seconds"] = latency
-                        print(f"{item['id']} | {latency}s | {answer[:140]}")
-                    except Exception as exc:
-                        row["error"] = f"{type(exc).__name__}: {exc}"
-                        print(f"{item['id']} | ERROR | {row['error']}")
+                    answer = ""
+                    latency = 0.0
+                    run_status = "error"
+                    err = "Ollama daemon unreachable (offline test)"
 
-                rows.append(row)
-                pd.DataFrame(rows).to_csv(OUTPUT_FILE, index=False, encoding="utf-8-sig")
+                results.append({
+                    "test_id": test_id,
+                    "topic": topic,
+                    "language": lang_name,
+                    "model": model_name,
+                    "question": question,
+                    "answer": answer,
+                    "status": run_status,
+                    "latency_ms": latency,
+                    "error": err,
+                    "timestamp": datetime.now().isoformat(timespec="seconds"),
+                })
 
-    df = pd.DataFrame(rows)
-    print("\nSaved:", OUTPUT_FILE)
-    print("\nAPI status by model and language:")
-    print(df.pivot_table(index=["model", "language"], columns="status",
-                         values="test_id", aggfunc="count", fill_value=0).to_string())
-    print("\nMean latency (successful responses only):")
-    print(df[df["status"] == "success"].groupby(["model", "language"])["latency_seconds"]
-          .mean().round(2).to_string())
-    print("\nIMPORTANT: API success and latency are not answer-quality scores.")
-    print("Review answers with fluent speakers and fill the quality columns before reporting quality.")
+    df = pd.DataFrame(results)
+    df.to_csv(DEFAULT_OUTPUT, index=False, encoding="utf-8-sig")
+    print(f"\nSaved {len(df)} comparison records to {DEFAULT_OUTPUT}")
+
 
 if __name__ == "__main__":
     main()

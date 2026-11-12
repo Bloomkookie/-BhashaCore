@@ -1,209 +1,145 @@
-# BhashaCore 🌐
+# BhashaCore: Multilingual FAQ Chatbot
 
-**BhashaCore** is a reliable, lightweight multilingual FAQ chatbot designed for public-service scenarios. It supports six Indian languages: **English, Hindi, Bengali, Punjabi, Assamese, and Nepali**.
+A reliable, fast, zero-hallucination multilingual public-service FAQ chatbot supporting **English, Hindi, Bengali, Punjabi, Assamese, and Nepali**.
 
-BhashaCore uses an intent-driven similarity engine (`faq_engine.py`) with Indic Unicode-preserving normalization, content-word scoring, and confidence gating. It matches user inquiries directly against curated multilingual FAQ entries in `faq_data.json`, delivering deterministic responses with zero hallucinations and without requiring expensive model training or running local LLMs.
-
----
-
-> [!WARNING]
-> ### Prototype & Test Data Notice
-> 1. **Fictional Test Fixture:** The scholarship scheme used in this prototype is **completely fictional** and intended strictly for technical evaluation. It is **not** real government policy or public-service guidance.
-> 2. **Draft Translations:** All non-English responses (Hindi, Bengali, Punjabi, Assamese, Nepali) are **starter editing drafts** (`draft_unverified`) and have **not** yet been independently certified by native fluent speakers. Before any public deployment, each answer must undergo review by qualified native speakers.
+BhashaCore is engineered for high accuracy, low latency, and zero-overhead local deployment on standard consumer hardware (including Apple Silicon MacBook Air with 8 GB RAM).
 
 ---
 
-## Architecture Overview
+## 🚀 Key Highlights & Architecture (v2.0)
 
-```
-BhashaCore/
-├── app.py                           # Interactive Streamlit chatbot UI
-├── faq_engine.py                    # Core retrieval, Unicode normalization & similarity engine
-├── faq_data.json                    # Multilingual FAQ knowledge base (6 topics, 6 languages)
-├── evaluate_faq.py                  # Automated benchmark evaluation runner
-├── requirements.txt                 # Minimal dependencies to run the chatbot (Streamlit)
-├── requirements-research.txt        # Optional dependencies for research & dataset scripts
-├── .streamlit/config.toml           # Streamlit headless & telemetry-free configuration
-├── tests/
-│   ├── test_faq_engine.py           # 31 unit & regression tests across all 6 languages
-│   └── test_app_integration.py      # Streamlit app integration & backward-compatibility tests
-├── evaluation_questions.json        # Baseline test scenarios (18 questions)
-├── evaluation_questions_expanded.json # Expanded benchmark (10 scenarios x 6 languages = 60 questions)
-├── multilingual_sample.csv          # 100-row sample from AI4Bharat IN22-Gen (culture domain)
-├── prepare_dataset.py               # IN22-Gen dataset extraction script
-├── test_dataset.py                  # Dataset integrity and completeness verification
-├── evaluate_chatbot.py              # Optional Ollama LLM evaluation script
-├── compare_models.py                # Optional Ollama multi-model benchmark (3B vs 7B)
-├── create_quality_review.py         # Human evaluation template generator
-└── review_results.py                # Review template creator for evaluation results
-```
+1. **Lightweight Deterministic Core:**
+   - Pure Python standard library retrieval via `faq_engine.py` and `knowledge_base.py`.
+   - **~12 ms retrieval latency** on Apple Silicon with 100% test accuracy on evaluation benchmarks.
+   - Preserves Indic Unicode combining marks (matras, viramas, halants) across Devanagari, Bengali, and Gurmukhi scripts.
+   - Stopword and domain-term filtering prevents false-positive topic matches.
 
-### Key Technical Enhancements
+2. **Extensible Multi-Domain Knowledge Layer:**
+   - Multi-domain indexing (`education`, `public_services`, and custom government schemes).
+   - Ingests curated local FAQs and sampled subsets from `ai4bharat/Indic-Rag-Suite`.
+   - Explicit provenance metadata tracking: source reference, dataset origin, and translation review status.
 
-1. **Indic Unicode Normalization:**
-   Standard regex `[^\w\s]` strips Unicode combining marks (matras, viramas, halants), shredding Indic words into broken single characters (e.g. `छात्रवृत्ति` became `['छ', 'त', 'रव', 'त', 'त']`). `faq_engine.py` implements NFC Unicode normalization preserving letters (`L`), combining marks (`M`), and numbers (`N`).
+3. **Hybrid Fallback & Anti-Hallucination Guardrails:**
+   - Strict confidence thresholding (`threshold=0.40`) and ambiguity gating (`margin=0.04`).
+   - If an unsupported query is asked, the engine safely falls back rather than inventing factual answers.
+   - When configured and available, Ollama (`qwen2.5:3b` / `gemma3:4b`) provides grounded answering strictly constrained to the knowledge base context.
 
-2. **Domain-Specific Stopword & Intent Isolation:**
-   Filtering out general grammatical stopwords and common domain terms (`scholarship`, `छात्रवृत्ति`, `বৃত্তি`, `ਵਜ਼ੀਫ਼ਾ`) isolates genuine intent words (e.g., `documents`, `deadline`, `amount`, `eligibility`, `contact`), preventing boilerplate text from triggering false-positive matches.
-
-3. **Anti-Hallucination & Ambiguity Guardrails:**
-   - Unsupported / out-of-domain questions (weather, general knowledge, unsupported policies) return `NO_MATCH` with a polite refusal to guess.
-   - Ambiguous queries where two topics have indistinguishable scores (margin < 0.04) or single ambiguous words prompt the user to rephrase rather than guessing.
-   - Missing translations trigger an explicit fallback stating that an answer is pending fluent review in that language.
+4. **Streamlit Interactive UI:**
+   - Dynamic language switching for all 6 languages.
+   - Real-time system status sidebar (Ollama daemon status, active knowledge domain records).
+   - Provenance badges indicating topic confidence (`🟢 High`, `🟡 Moderate`, `🟠 Threshold`) and draft translation notices.
 
 ---
 
-## Getting Started on macOS
+## 🛠️ Installation & Setup (macOS)
 
 ### 1. Prerequisites
-- macOS 12+ (Apple Silicon or Intel)
-- Python 3.9, 3.10, 3.11, or 3.12
+- macOS (tested on macOS Sonoma / Sequoia)
+- Python 3.9+ (System Python `/usr/bin/python3` or Homebrew Python)
 
-Check your Python version:
+### 2. Environment Setup
 ```bash
-python3 --version
-```
+cd BhashaCore
 
-### 2. Set Up Virtual Environment
-
-Open Terminal and navigate to the project root:
-```bash
-cd ~/Downloads/BhashaCore
-
-# Create an isolated virtual environment
+# Create and activate virtual environment
 python3 -m venv .venv
-
-# Activate the virtual environment
 source .venv/bin/activate
+
+# Install application dependencies
+pip install -r requirements.txt
 ```
 
-### 3. Install Minimal Dependencies to Run the App
-
-```bash
-python3 -m pip install --upgrade pip
-python3 -m pip install -r requirements.txt
-```
-
-*(Optional: If you intend to run dataset scripts or Ollama benchmarks, install `pip install -r requirements-research.txt`).*
-
-### 4. Launch the Application
-
+### 3. Launch the Application
 ```bash
 streamlit run app.py
 ```
-
-The app will open automatically in your browser at `http://localhost:8501`.
+Open your browser at `http://localhost:8501`.
 
 ---
 
-## Testing & Quality Verification
+## 🧪 Automated Testing & Evaluation
 
-### Run the Automated Unit Test Suite
-
-Run the built-in test suite (no external test runner needed):
+### Run Full Unit Test Suite (44 Tests)
 ```bash
 python3 -m unittest discover -s tests -v
 ```
+All 44 automated tests verify:
+- Unicode Indic normalization and matra preservation
+- Multilingual tokenization and soft stem matching
+- Knowledge base multi-domain loading & schema validation
+- Deterministic retrieval across all 6 languages
+- Out-of-domain rejection and ambiguity guardrails
+- Ollama client offline fault-tolerance
+- Translation service fallback contracts
 
-**Test Coverage (31 automated tests):**
-- Latin and Indic normalization across Hindi, Bengali, Punjabi, Assamese, and Nepali
-- Preservation of vowel signs, matras, viramas, and conjuncts
-- Morphological stem matching for Indic inflections
-- Semantic similarity scoring and stopword filtering
-- Schema validation of `faq_data.json` across all six languages
-- 100% precision on the 60-question expanded benchmark
-- Anti-hallucination rejection of out-of-domain and unsupported questions
-- Ambiguous query rejection
-- Missing translation fallback handling
-- Streamlit application module integration and export compatibility
-
-### Run the Multilingual FAQ Benchmark Tool
-
-Evaluate retrieval accuracy, confidence scores, and per-query latency across all 60 test questions:
+### Run Retrieval Benchmark
 ```bash
 python3 evaluate_faq.py
 ```
+Runs the 60-question expanded benchmark, 18-question baseline, and 10 adversarial out-of-domain queries, exporting results to `faq_evaluation_results.csv`.
 
-Sample output:
+---
+
+## 🤖 Optional Ollama Integration
+
+BhashaCore is fully functional **without** an LLM. If you wish to enable generative responses for unassisted queries:
+
+```bash
+# Start Ollama daemon
+ollama serve
+
+# In a separate terminal, pull recommended models
+ollama pull qwen2.5:3b
+# Or lightweight alternative:
+ollama pull gemma3:4b
 ```
-======================================================================
-EVALUATION SUMMARY RESULTS
-======================================================================
-Language     Code   Tested   Passed   Accuracy   Mean Latency
-----------------------------------------------------------------------
-English      en     10       10       100.0%      12.11 ms
-Hindi        hi     10       10       100.0%      13.52 ms
-Bengali      bn     10       10       100.0%      12.40 ms
-Punjabi      pa     10       10       100.0%      13.14 ms
-Assamese     as     10       10       100.0%      12.50 ms
-Nepali       ne     10       10       100.0%      11.60 ms
-----------------------------------------------------------------------
-OVERALL      all    60       60       100.0%      12.55 ms
-======================================================================
-Baseline Benchmark Pass Rate:       18/18 (100.0%)
-Anti-Hallucination Rejection Rate: 10/10 (100.0%)
+
+Configure parameters via environment variables if desired:
+```bash
+export BHASHACORE_MODEL="qwen2.5:3b"
+export BHASHACORE_OLLAMA_URL="http://localhost:11434"
+export BHASHACORE_THRESHOLD="0.40"
 ```
 
 ---
 
-## Research & Evaluation Workflows (Optional)
+## 📊 Evaluation & Quality Verification
 
-These scripts are optional research tools and are kept separate from the minimal chatbot runtime:
+| Language | Code | Benchmark Accuracy | Mean Retrieval Latency | Translation Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **English** | `en` | 100.0% | 12.3 ms | Verified Reference |
+| **Hindi** | `hi` | 100.0% | 13.4 ms | Draft (Unverified) |
+| **Bengali** | `bn` | 100.0% | 12.4 ms | Draft (Unverified) |
+| **Punjabi** | `pa` | 100.0% | 13.1 ms | Draft (Unverified) |
+| **Assamese** | `as` | 100.0% | 12.6 ms | Draft (Unverified) |
+| **Nepali** | `ne` | 100.0% | 11.5 ms | Draft (Unverified) |
 
-### 1. Dataset Verification
-Verify the bundled 100-row AI4Bharat IN22-Gen sample:
-```bash
-python3 test_dataset.py
-```
-
-### 2. Dataset Preparation (Online)
-To re-download and export a sample from HuggingFace (requires internet access):
-```bash
-python3 prepare_dataset.py
-```
-
-### 3. Ollama LLM Evaluation (Optional)
-If you wish to benchmark against local LLMs:
-1. Ensure Ollama is installed and running:
-   ```bash
-   ollama serve
-   ```
-2. Pull the evaluation models:
-   ```bash
-   ollama pull qwen2.5:3b
-   ollama pull qwen2.5:7b
-   ```
-3. Run the evaluation:
-   ```bash
-   python3 evaluate_chatbot.py
-   python3 compare_models.py
-   ```
-
-### 4. Human Quality Review Template
-Generate a review sheet for native fluent speakers to score factual correctness, completeness, and language fluency:
-```bash
-python3 create_quality_review.py
-```
-This generates `quality_review_template.csv` ready for human evaluation.
+> ⚠️ **Important Testing Notice:** Non-English translations in `faq_data.json` are draft fixtures created for technical benchmarking and must undergo human review by native fluent speakers before public deployment. Test scholarship data is fictional and not official government policy.
 
 ---
 
-## Troubleshooting on macOS
+## 📂 Project Directory Structure
 
-| Issue | Cause | Solution |
-| :--- | :--- | :--- |
-| `PermissionError: credentials.toml` | Streamlit attempted to write to `~/.streamlit` on first launch | A pre-configured `.streamlit/config.toml` is provided in the repository with `gatherUsageStats = false`. Set `STREAMLIT_BROWSER_GATHER_USAGE_STATS=false` if needed. |
-| `ModuleNotFoundError: No module named 'streamlit'` | Virtual environment is not activated | Activate the virtual environment with `source .venv/bin/activate` before running commands. |
-| Corrupted or missing FAQ file | `faq_data.json` deleted or moved | Ensure `faq_data.json` is located in the same directory as `app.py`. |
-| Indic characters appear as squares/tofu in terminal | Terminal lacks Indic Unicode fonts | Use the modern macOS Terminal or iTerm2 with fonts such as *Kohinoor*, *Bangla MN*, *Gurmukhi MN*, or *Devanagari Sangam MN*. The web browser interface renders all scripts natively. |
-
----
-
-## Language Quality Review Checklist
-
-Before using non-English answers in any public demonstration:
-1. **Hindi (`hi`):** Review by native Hindi speaker for natural grammar, appropriate formal tone (*आप*), and clarity.
-2. **Bengali (`bn`):** Check formal verb endings and document vocabulary (*নথি*, *পরিচয়পত্র*).
-3. **Punjabi (`pa`):** Verify Gurmukhi spellings, auxiliary verbs (*ਹਨ*, *ਲੋੜੀਂਦੇ*), and vocabulary (*ਵਜ਼ੀਫ਼ਾ*, *ਦਸਤਾਵੇਜ਼*).
-4. **Assamese (`as`):** Confirm unique Assamese characters (*ৰ*, *ৱ*) and case inflections (*-ৰ*, *-লৈ*).
-5. **Nepali (`ne`):** Verify polite imperative forms (*दिनुहोस्*, *चाहिन्छ*) and administrative terminology (*कागजात*, *अभिलेख*).
+```text
+BhashaCore/
+├── app.py                     # Streamlit web application with sidebar diagnostics
+├── config.py                  # Central configuration & environment variables
+├── knowledge_base.py          # Multi-domain knowledge layer & provenance tracker
+├── faq_engine.py              # Pure-Python Unicode-aware retrieval engine
+├── ollama_client.py           # Fault-tolerant local LLM client
+├── translation_service.py     # IndicTrans2 interface & fallback translator
+├── ingest_rag_suite.py        # Preprocessing script for AI4Bharat Indic-RAG-Suite
+├── evaluate_faq.py            # Automated multi-language evaluation runner
+├── compare_models.py          # LLM comparison & benchmarking tool
+├── faq_data.json              # Curated multi-domain multilingual FAQ knowledge base
+├── data/
+│   ├── README.md
+│   └── rag_sample.json        # Ingested public-service sample records
+├── tests/
+│   ├── __init__.py
+│   ├── test_app_integration.py
+│   ├── test_faq_engine.py
+│   └── test_v2_upgrades.py    # Unit tests for v2.0 modules
+├── requirements.txt           # Minimal runtime dependencies
+└── requirements-research.txt  # Optional research & evaluation dependencies
+```

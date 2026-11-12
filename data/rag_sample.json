@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "source": "AI4Bharat/Indic-Rag-Suite",
+  "license": "CC-BY",
+  "entries": [
+    {
+      "id": "gov_ration_card_eligibility",
+      "domain": "public_services",
+      "topic": "ration_card_eligibility",
+      "question_examples": {
+        "en": [
+          "Who is eligible to apply for a priority ration card?"
+        ],
+        "hi": [
+          "प्राथमिकता राशन कार्ड के लिए कौन पात्र है?"
+        ]
+      },
+      "answer": {
+        "en": "Households meeting state income criteria and not owning motorized four-wheelers or pucca houses are eligible for priority ration cards under the National Food Security Act.",
+        "hi": "राष्ट्रीय खाद्य सुरक्षा अधिनियम के तहत राज्य के आय मानदंडों को पूरा करने वाले परिवार प्राथमिकता राशन कार्ड के लिए पात्र हैं।"
+      },
+      "source": {
+        "type": "indic_rag_suite_sample",
+        "dataset": "ai4bharat/Indic-Rag-Suite",
+        "license": "CC-BY",
+        "provenance": "Sampled subset for domain-extension prototype"
+      },
+      "fictional": false,
+      "translation_status": "draft_unverified",
+      "facts": [
+        "National Food Security Act",
+        "State income criteria",
+        "Priority ration card"
+      ],
+      "metadata": {
+        "generator": "ingest_rag_suite.py",
+        "note": "Verify against official gazettes before production public service use"
+      }
+    },
+    {
+      "id": "gov_kisan_credit_card",
+      "domain": "public_services",
+      "topic": "kisan_credit_card",
+      "question_examples": {
+        "en": [
+          "What documents are needed for a Kisan Credit Card (KCC)?"
+        ],
+        "hi": [
+          "किसान क्रेडिट कार्ड (KCC) के लिए कौन से दस्तावेज चाहिए?"
+        ]
+      },
+      "answer": {
+        "en": "Applicants need identity proof, residence proof, land ownership records (Khata/Khatoni), and passport-size photographs.",
+        "hi": "आवेदकों को पहचान प्रमाण, निवास प्रमाण, भूमि स्वामित्व रिकॉर्ड और पासपोर्ट साइज फोटो की आवश्यकता होती है।"
+      },
+      "source": {
+        "type": "indic_rag_suite_sample",
+        "dataset": "ai4bharat/Indic-Rag-Suite",
+        "license": "CC-BY",
+        "provenance": "Sampled subset for domain-extension prototype"
+      },
+      "fictional": false,
+      "translation_status": "draft_unverified",
+      "facts": [
+        "Identity proof",
+        "Residence proof",
+        "Land records"
+      ],
+      "metadata": {
+        "generator": "ingest_rag_suite.py",
+        "note": "Verify against official gazettes before production public service use"
+      }
+    },
+    {
+      "id": "edu_digilocker_services",
+      "domain": "education",
+      "topic": "digilocker_certificates",
+      "question_examples": {
+        "en": [
+          "How can students fetch academic marksheets through DigiLocker?"
+        ],
+        "hi": [
+          "छात्र डिजिलॉकर के माध्यम से अंकपत्र कैसे प्राप्त कर सकते हैं?"
+        ]
+      },
+      "answer": {
+        "en": "Students sign in using Aadhaar, choose their educational board or university, and enter their roll number and exam year to fetch authentic digital marksheets.",
+        "hi": "छात्र आधार से लॉग इन करके अपने शिक्षा बोर्ड का चयन करते हैं और रोल नंबर दर्ज करके डिजिटल अंकपत्र डाउनलोड कर सकते हैं।"
+      },
+      "source": {
+        "type": "indic_rag_suite_sample",
+        "dataset": "ai4bharat/Indic-Rag-Suite",
+        "license": "CC-BY",
+        "provenance": "Sampled subset for domain-extension prototype"
+      },
+      "fictional": false,
+      "translation_status": "draft_unverified",
+      "facts": [
+        "DigiLocker",
+        "Aadhaar authentication",
+        "Digital marksheets"
+      ],
+      "metadata": {
+        "generator": "ingest_rag_suite.py",
+        "note": "Verify against official gazettes before production public service use"
+      }
+    }
+  ]
+}

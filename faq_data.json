@@ -94,7 +94,8 @@
         "reference": "KNOWLEDGE_BASE in original app.py"
       },
       "fictional": true,
-      "translation_status": "draft_unverified"
+      "translation_status": "draft_unverified",
+      "domain": "education"
     },
     {
       "id": "application_deadline",
@@ -145,7 +146,8 @@
         "reference": "KNOWLEDGE_BASE in original app.py"
       },
       "fictional": true,
-      "translation_status": "draft_unverified"
+      "translation_status": "draft_unverified",
+      "domain": "education"
     },
     {
       "id": "scholarship_amount",
@@ -196,7 +198,8 @@
         "reference": "KNOWLEDGE_BASE in original app.py"
       },
       "fictional": true,
-      "translation_status": "draft_unverified"
+      "translation_status": "draft_unverified",
+      "domain": "education"
     },
     {
       "id": "eligibility",
@@ -247,7 +250,8 @@
         "reference": "KNOWLEDGE_BASE in original app.py"
       },
       "fictional": true,
-      "translation_status": "draft_unverified"
+      "translation_status": "draft_unverified",
+      "domain": "education"
     },
     {
       "id": "application_method",
@@ -298,7 +302,8 @@
         "reference": "KNOWLEDGE_BASE in original app.py"
       },
       "fictional": true,
-      "translation_status": "draft_unverified"
+      "translation_status": "draft_unverified",
+      "domain": "education"
     },
     {
       "id": "contact_information",
@@ -349,7 +354,8 @@
         "reference": "KNOWLEDGE_BASE in compare_models.py"
       },
       "fictional": true,
-      "translation_status": "draft_unverified"
+      "translation_status": "draft_unverified",
+      "domain": "education"
     }
   ]
 }
