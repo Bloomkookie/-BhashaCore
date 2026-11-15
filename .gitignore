@@ -31,6 +31,16 @@ venv.bak/
 
 # Streamlit
 .streamlit/credentials.toml
+.streamlit/secrets.toml
+
+# Local model weights (multi-GB, not source)
+models/
+
+# Presentation files
+*.pptx
+
+# Logs
+logs/
 
 # IDE & Editor
 .vscode/

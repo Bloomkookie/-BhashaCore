@@ -23,6 +23,8 @@ from translation_service import (
     INDICTRANS2_LANG_CODES,
     FallbackTranslationBackend,
     get_translation_backend,
+    protect_currency_tokens,
+    restore_currency_tokens,
 )
 
 
@@ -138,6 +140,16 @@ class TestTranslationService(unittest.TestCase):
     def test_get_translation_backend_default(self):
         backend = get_translation_backend(enabled=False)
         self.assertIsInstance(backend, FallbackTranslationBackend)
+
+    def test_currency_codes_round_trip_unchanged(self):
+        text = "Fee is INR 200 and Rs. 5, or USD 3."
+        protected, mapping = protect_currency_tokens(text)
+        self.assertNotIn("INR", protected)
+        self.assertNotIn("USD", protected)
+        self.assertEqual(restore_currency_tokens(protected, mapping), text)
+
+    def test_unknown_currency_token_is_removed(self):
+        self.assertEqual(restore_currency_tokens("fee ZQXCURZQX 200", {}), "fee  200")
 
 
 if __name__ == "__main__":

@@ -1,30 +1,30 @@
-"""BhashaCore Streamlit Web Application.
+"""BhashaCore Streamlit application.
 
-A lightweight, reliable multilingual FAQ chatbot for public-service scenarios,
-supporting English, Hindi, Bengali, Punjabi, Assamese, and Nepali.
+A conversational multilingual assistant supporting English, Hindi, Bengali,
+Punjabi, Assamese, and Nepali.  The UI exposes general conversation, curated
+FAQ lookup, document-grounded QA with citations, translation, summarization,
+session memory, and honest diagnostics.
 
-Integrates:
-- Fast deterministic FAQ retrieval via KnowledgeBase & faq_engine
-- Optional LLM grounding via Ollama (qwen2.5:3b / gemma3:4b) with anti-hallucination guardrails
-- Full provenance attribution, confidence badges, and draft translation disclaimers
-- Diagnostics panel for runtime model and knowledge-base status
+The deterministic FAQ helpers remain importable from this module for backward
+compatibility with the original test suite.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import streamlit as st
 
+from chatbot import Chatbot, ChatResponse
 from config import (
     DEFAULT_FAQ_PATH,
     FAQ_AMBIGUITY_MARGIN,
     FAQ_MATCH_THRESHOLD,
     LANGUAGE_CODES,
     SUPPORTED_LANGUAGES,
-    get_config_summary,
 )
 from faq_engine import (
     DEFAULT_AMBIGUITY_MARGIN,
@@ -39,7 +39,8 @@ from faq_engine import (
     tokens,
 )
 from knowledge_base import KnowledgeBase
-from ollama_client import check_ollama_status, generate_response
+from language_utils import language_name
+from router import ROUTE_LABELS
 
 # Backward-compatible module exports
 APP_DIR = Path(__file__).resolve().parent
@@ -62,209 +63,382 @@ __all__ = [
     "main",
 ]
 
+AUTO_LANGUAGE = "Auto-detect"
+LANGUAGE_OPTIONS = [AUTO_LANGUAGE] + list(SUPPORTED_LANGUAGES)
+
+SOURCE_LABELS = {
+    "general": "General knowledge · model-generated, not source-verified",
+    "document": "Document-grounded · answers restricted to retrieved passages",
+    "faq": "Curated FAQ · demo knowledge base",
+    "translation": "Machine translation · generated text",
+    "summary": "Model summary · verify important facts",
+    "clarification": "Clarification requested",
+    "error": "Error",
+}
+
+EXAMPLE_PROMPTS = [
+    ("General & science", "Explain photosynthesis in simple English."),
+    ("General & science", "प्रकाश संश्लेषण सरल हिंदी में समझाइए।"),
+    ("Programming", "What is a Python function? Give a short example."),
+    ("Programming", "SQL में duplicate rows कैसे find करें?"),
+    ("Translation", "Translate to Hindi: The district office is closed on Sunday."),
+    ("Translation", "Translate to Assamese: Please bring your income certificate."),
+    ("Government demo", "What documents are required for the scholarship?"),
+    ("Government demo", "छात्रवृत्ति के लिए आवेदन कैसे करें?"),
+]
+
 
 @st.cache_resource
 def get_initialized_knowledge_base() -> KnowledgeBase:
-    """Initialize and cache KnowledgeBase with curated FAQs and available samples."""
+    """Load curated FAQs and the optional AI4Bharat sample records once."""
     kb = KnowledgeBase()
     kb.load_faq_file(FAQ_PATH)
-
-    # Ingest RAG sample if present in data/
     rag_file = APP_DIR / "data" / "rag_sample.json"
     if rag_file.exists():
         try:
-            with rag_file.open("r", encoding="utf-8") as f:
-                content = json.load(f)
-                entries = content.get("entries", [])
+            with rag_file.open("r", encoding="utf-8") as handle:
+                entries = json.load(handle).get("entries", [])
                 kb.load_rag_entries(entries)
         except Exception:
             pass
-
     return kb
 
 
-def render_sidebar(kb: KnowledgeBase, ollama_status: Dict[str, Any]) -> None:
-    """Render system diagnostics, model availability, and knowledge stats in the sidebar."""
-    st.sidebar.title("⚙️ System Status")
+def _get_bot() -> Chatbot:
+    if "bot" not in st.session_state:
+        st.session_state.bot = Chatbot(kb=get_initialized_knowledge_base())
+        st.session_state.messages = []
+        st.session_state.upload_signature = ()
+        st.session_state.upload_results = []
+    return st.session_state.bot
 
-    # Knowledge Base Overview
-    st.sidebar.subheader("Knowledge Layer")
-    stats = kb.get_stats()
-    st.sidebar.markdown(f"**Total QA Records:** `{stats['total_entries']}`")
-    st.sidebar.markdown(f"**Domains Active:** `{', '.join(kb.get_domains())}`")
-    st.sidebar.markdown(f"**Languages Loaded:** `{len(stats['supported_languages'])}`")
+
+def _language_value(option: str) -> str:
+    return "Auto" if option == AUTO_LANGUAGE else option
+
+
+def _append_user(prompt: str) -> None:
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+
+def _append_response(response: ChatResponse) -> None:
+    st.session_state.messages.append(
+        {
+            "role": "assistant",
+            "content": response.answer,
+            "route": response.route,
+            "source_type": response.source_type,
+            "target_lang": response.target_lang,
+            "detected_lang": response.detected_lang,
+            "detection_confidence": response.detection_confidence,
+            "model": response.model,
+            "latency_ms": response.latency_ms,
+            "citations": response.citations,
+            "notes": response.notes,
+            "error": response.error,
+            "evidence_found": response.evidence_found,
+            "retrieval_method": response.retrieval_method,
+            "backend": response.backend,
+            "translated": response.translated,
+        }
+    )
+
+
+def _render_meta(message: Dict[str, Any]) -> None:
+    route = message.get("route", "")
+    target_lang = message.get("target_lang")
+    details: List[str] = []
+    if route:
+        details.append(ROUTE_LABELS.get(route, route))
+    if target_lang:
+        details.append(f"answer language: {language_name(target_lang)}")
+    if message.get("model"):
+        details.append(f"model: {message['model']}")
+    if message.get("latency_ms"):
+        details.append(f"latency: {message['latency_ms'] / 1000.0:.1f}s")
+    if message.get("retrieval_method"):
+        details.append(f"retrieval: {message['retrieval_method']}")
+    if message.get("backend"):
+        details.append(f"translation: {message['backend']}")
+    if details:
+        st.caption(" · ".join(details))
+
+    if message.get("source_type") in SOURCE_LABELS:
+        st.caption(f"**Source:** {SOURCE_LABELS[message['source_type']]}")
+    if message.get("evidence_found") is False:
+        st.caption("No supporting evidence was found in the uploaded documents.")
+    if (
+        message.get("detected_lang")
+        and message.get("detection_confidence", 1.0) < 0.6
+        and message.get("target_lang") == message.get("detected_lang")
+    ):
+        st.caption(
+            "Automatic language detection was uncertain for this input. "
+            "Select the language manually if the answer looks wrong."
+        )
+
+    citations = message.get("citations") or []
+    if citations:
+        cited_count = sum(1 for citation in citations if citation.cited)
+        if cited_count:
+            title = f"Sources ({cited_count})"
+            if cited_count < len(citations):
+                title += f" · {len(citations) - cited_count} retrieved but not cited"
+        else:
+            title = f"Retrieved passages ({len(citations)}, not cited by the model)"
+        with st.expander(title, expanded=True):
+            for citation in citations:
+                marker = "" if citation.cited else " _(retrieved, not cited)_"
+                st.markdown(f"**{citation.label()}**{marker}")
+                if citation.excerpt:
+                    st.caption(citation.excerpt)
+
+    notes = message.get("notes") or []
+    if notes:
+        with st.expander("Notes & limitations"):
+            for note in notes:
+                st.markdown(f"- {note}")
+
+    with st.expander("Copy answer"):
+        st.code(message.get("content", ""), language="text", wrap_lines=True)
+
+
+def _run_turn(bot: Chatbot, prompt: str, language_option: str) -> None:
+    _append_user(prompt)
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    with st.chat_message("assistant"):
+        placeholder = st.empty()
+        holder: Dict[str, Any] = {}
+        pieces: List[str] = []
+        try:
+            for piece in bot.respond_stream(
+                prompt,
+                selected_language=_language_value(language_option),
+                holder=holder,
+            ):
+                pieces.append(piece)
+                placeholder.markdown("".join(pieces))
+        except Exception as exc:  # pragma: no cover - UI safety net
+            placeholder.error(f"Unexpected error: {type(exc).__name__}: {exc}")
+            _append_response(
+                ChatResponse(
+                    answer=f"Unexpected error: {type(exc).__name__}: {exc}",
+                    route="error",
+                    target_lang="en",
+                    detected_lang="en",
+                    detection_confidence=0.0,
+                    source_type="error",
+                    error=str(exc),
+                )
+            )
+            return
+
+        response: Optional[ChatResponse] = holder.get("response")
+        if response is None:
+            placeholder.error("The assistant produced no response.")
+            return
+
+        placeholder.markdown(response.answer)
+        _render_meta(
+            {
+                "content": response.answer,
+                "route": response.route,
+                "source_type": response.source_type,
+                "target_lang": response.target_lang,
+                "detected_lang": response.detected_lang,
+                "detection_confidence": response.detection_confidence,
+                "model": response.model,
+                "latency_ms": response.latency_ms,
+                "citations": response.citations,
+                "notes": response.notes,
+                "evidence_found": response.evidence_found,
+                "retrieval_method": response.retrieval_method,
+                "backend": response.backend,
+            }
+        )
+        _append_response(response)
+
+
+def _render_sidebar(bot: Chatbot) -> None:
+    st.sidebar.title("BhashaCore")
+    st.sidebar.caption("Six-language conversational assistant with grounded document QA.")
+
+    st.sidebar.subheader("Language")
+    st.sidebar.caption(
+        "Auto-detect uses Unicode script plus function-word evidence. "
+        "Short Assamese/Bengali or Hindi/Nepali text can be ambiguous."
+    )
 
     st.sidebar.divider()
+    st.sidebar.subheader("Documents")
+    uploads = st.sidebar.file_uploader(
+        "Upload PDF, TXT, MD, JSON, or CSV",
+        type=["pdf", "txt", "md", "markdown", "json", "csv"],
+        accept_multiple_files=True,
+        help="Text is chunked and indexed locally. Scanned/image-only PDFs are not supported.",
+    )
+    signature = tuple(
+        (upload.name, len(upload.getvalue()), hashlib.sha1(upload.getvalue()).hexdigest()[:12])
+        for upload in (uploads or [])
+    )
+    current_signature = tuple(st.session_state.get("upload_signature", ()))
+    new_files = [
+        upload
+        for upload in (uploads or [])
+        if (upload.name, len(upload.getvalue()), hashlib.sha1(upload.getvalue()).hexdigest()[:12])
+        not in current_signature
+    ]
+    if new_files:
+        results = []
+        for upload in new_files:
+            results.append((upload.name, bot.add_document(upload.name, upload.getvalue())))
+        st.session_state.upload_signature = signature
+        st.session_state.upload_results = results
+        st.rerun()
 
-    # Ollama / LLM Status
-    st.sidebar.subheader("Ollama LLM Engine")
-    cfg = get_config_summary()
-    st.sidebar.markdown(f"**Configured Model:** `{cfg['configured_model']}`")
+    results = st.session_state.get("upload_results") or []
+    for name, result in results:
+        if result.error:
+            st.sidebar.error(f"{name}: {result.error}")
+        else:
+            warnings = " ".join(result.warnings or [])
+            text = f"{name}: {len(result.chunks)} chunk(s) indexed."
+            if warnings:
+                text += f" {warnings}"
+            st.sidebar.success(text)
 
-    if ollama_status["available"]:
-        st.sidebar.success("🟢 Ollama Daemon: Online")
-        models = ollama_status.get("models", [])
-        if models:
-            st.sidebar.caption(f"Installed Models: {', '.join(models)}")
+    stats = bot.documents.stats()
+    st.sidebar.caption(
+        f"{stats['documents']} document(s), {stats['chunks']} chunk(s), "
+        f"languages: {', '.join(stats['languages']) or 'none'}"
+    )
+    if st.sidebar.button("Clear documents", use_container_width=True):
+        bot.clear_documents()
+        st.session_state.upload_results = []
+        st.session_state.upload_signature = ()
+        st.rerun()
+
+    st.sidebar.divider()
+    st.sidebar.subheader("System diagnostics")
+    if st.sidebar.button("Refresh diagnostics", use_container_width=True):
+        bot.refresh_status()
+        st.rerun()
+
+    status = bot.status()
+    if status.get("ollama_available"):
+        st.sidebar.success(f"Ollama online · {status.get('active_model')}")
     else:
-        st.sidebar.warning("🟡 Ollama Daemon: Offline / Sandboxed")
-        st.sidebar.caption("FAQ retrieval operates independently without requiring an LLM.")
+        st.sidebar.warning("Ollama offline · general answers unavailable")
+        if status.get("ollama_error"):
+            st.sidebar.caption(status["ollama_error"])
+    st.sidebar.caption(
+        f"Embedding model: {status.get('embedding_model')} "
+        f"({'available' if status.get('embedding_available') else 'unavailable'})"
+    )
+    st.sidebar.caption(
+        f"Translator: {status.get('translator_backend')} "
+        f"({'installed' if status.get('translator_installed') else 'not installed'})"
+    )
+    st.sidebar.caption(
+        f"Knowledge base entries: {len(bot.kb.get_all_entries())} · "
+        f"session messages: {len(bot.history)}"
+    )
 
     st.sidebar.divider()
-    st.sidebar.caption("BhashaCore v2.0 · SIH Multilingual AI Assistant")
+    st.sidebar.caption(
+        "NLLB-200 is CC-BY-NC-4.0 (non-commercial). "
+        "Scholarship records are fictional demo fixtures."
+    )
+
+
+def _render_examples(bot: Chatbot) -> None:
+    with st.expander("Example prompts", expanded=not st.session_state.messages):
+        st.caption(
+            "Questions work in any supported language. "
+            "Use the selector above for a fixed answer language."
+        )
+        columns = st.columns(2)
+        for index, (category, prompt) in enumerate(EXAMPLE_PROMPTS):
+            column = columns[index % 2]
+            if column.button(
+                f"{category}: {prompt}",
+                key=f"example_{index}",
+                use_container_width=True,
+            ):
+                st.session_state.pending_prompt = prompt
+                st.rerun()
+        if bot.documents.documents:
+            document_prompts = [
+                "Summarize the uploaded document.",
+                "According to the document, what are the key requirements?",
+            ]
+            for offset, prompt in enumerate(document_prompts):
+                if st.button(prompt, key=f"doc_example_{offset}", use_container_width=True):
+                    st.session_state.pending_prompt = prompt
+                    st.rerun()
 
 
 def main() -> None:
-    """Run the BhashaCore Streamlit interactive web application."""
+    """Run the BhashaCore Streamlit chat application."""
     st.set_page_config(
-        page_title="BhashaCore · Multilingual FAQ Chatbot",
+        page_title="BhashaCore · Multilingual AI Assistant",
         page_icon="🌐",
         layout="centered",
     )
 
-    kb = get_initialized_knowledge_base()
-    ollama_status = check_ollama_status()
+    bot = _get_bot()
 
-    # Render system sidebar
-    render_sidebar(kb, ollama_status)
+    language_option = st.selectbox(
+        "Answer language",
+        options=LANGUAGE_OPTIONS,
+        index=0,
+        help=(
+            "Auto-detect follows the language of your message. "
+            "Select a language to force the answer language."
+        ),
+    )
+    _render_sidebar(bot)
 
     st.title("🌐 BhashaCore")
     st.caption(
-        "Multilingual Public-Service FAQ Chatbot · Supporting English, "
-        "Hindi, Bengali, Punjabi, Assamese, and Nepali"
+        "Conversational assistant for English, Hindi, Bengali, Punjabi, Assamese, and Nepali. "
+        "Answers distinguish general model knowledge, curated FAQ data, and document-grounded evidence."
+    )
+    st.info(
+        "Scholarship FAQ content is fictional demo data. Machine translations are unverified. "
+        "Always confirm deadlines, fees, eligibility, and legal requirements against an official source."
     )
 
-    st.warning(
-        "⚠️ **Prototype Notice & Disclaimer:** This application includes **fictional scholarship test data** "
-        "for system benchmarking. Non-English translations are **unverified drafts** pending native-speaker "
-        "validation. Never present or rely on these responses as official government policy."
-    )
-
-    # Response Language Selector
-    language_name = st.selectbox(
-        "Choose your response language:",
-        options=list(SUPPORTED_LANGUAGES.keys()),
-        index=0,
-        help="Select the language in which you want to receive answers.",
-    )
-    lang_code = SUPPORTED_LANGUAGES[language_name]
-
-    # Session State Management
     if "messages" not in st.session_state:
         st.session_state.messages = []
-    if "active_language" not in st.session_state:
-        st.session_state.active_language = language_name
 
-    # Reset chat history if user switches response language
-    if language_name != st.session_state.active_language:
-        st.session_state.messages = []
-        st.session_state.active_language = language_name
-
-    # Render Chat History
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
-            if "provenance" in message:
-                prov = message["provenance"]
-                st.caption(prov)
+            if message["role"] == "assistant":
+                _render_meta(message)
 
-    # User Chat Input
-    question = st.chat_input("Ask a public-service or scholarship question...")
+    pending = st.session_state.pop("pending_prompt", None)
+    if pending:
+        _run_turn(bot, pending, language_option)
+
+    _render_examples(bot)
+
+    question = st.chat_input("Ask anything, upload a document, or request a translation...")
     if question:
-        st.session_state.messages.append({"role": "user", "content": question})
-        with st.chat_message("user"):
-            st.markdown(question)
+        _run_turn(bot, question, language_option)
 
-        with st.chat_message("assistant"):
-            with st.spinner("Searching multilingual knowledge base..."):
-                entry, score, prov = kb.search(question)
-
-                provenance_caption = ""
-                if entry is not None:
-                    # Verified stored answer in knowledge base
-                    topic_id = entry.topic
-                    domain = entry.domain
-                    raw_answer = entry.answer.get(lang_code)
-
-                    if not raw_answer:
-                        answer = format_fallback_message("missing_translation")
-                        provenance_caption = f"Topic `{topic_id}` · Domain: `{domain}` (translation pending in {language_name})"
-                    else:
-                        answer = raw_answer
-                        conf_badge = "🟢 High" if score >= 0.70 else ("🟡 Moderate" if score >= 0.50 else "🟠 Threshold")
-                        fictional_badge = " | 🧪 Fictional Test Fixture" if entry.fictional else " | 🏛️ Public Service Data"
-                        status_badge = " | ⚠️ Draft translation" if entry.translation_status != "verified" else " | ✅ Verified"
-
-                        provenance_caption = (
-                            f"**Source Attribution:** Topic `{topic_id}` ({domain}) · "
-                            f"Confidence: `{score:.2f}` ({conf_badge}){fictional_badge}{status_badge}"
-                        )
-                else:
-                    # Fallback path: Check if Ollama is available to provide grounded answer,
-                    # otherwise return strict anti-hallucination fallback
-                    if ollama_status["available"]:
-                        context = kb.compile_grounding_context()
-                        llm_res = generate_response(
-                            question=question,
-                            context=context,
-                            language=language_name,
-                        )
-                        if llm_res["status"] == "success" and llm_res["answer"]:
-                            answer = llm_res["answer"]
-                            provenance_caption = (
-                                f"🤖 **AI-Generated Answer** (Model: `{llm_res['model']}`) · "
-                                f"Latency: `{llm_res['latency_ms']}ms` · Context Grounded"
-                            )
-                        else:
-                            answer = format_fallback_message("no_match")
-                            provenance_caption = f"No match (Best similarity: `{score:.2f}`) · Ollama generation unassisted"
-                    else:
-                        answer = format_fallback_message("no_match")
-                        provenance_caption = f"No confident match (Best similarity: `{score:.2f}`) · Anti-hallucination gate active"
-
-                st.markdown(answer)
-                if provenance_caption:
-                    st.caption(provenance_caption)
-
-        st.session_state.messages.append(
-            {
-                "role": "assistant",
-                "content": answer,
-                "provenance": provenance_caption,
-            }
-        )
-
-    # Interactive Action Buttons
-    col1, col2 = st.columns(2)
-    with col1:
+    action_columns = st.columns(2)
+    with action_columns[0]:
         if st.button("Clear conversation", use_container_width=True):
+            bot.clear_history()
             st.session_state.messages = []
             st.rerun()
-    with col2:
-        if st.button("Show sample questions", use_container_width=True):
-            st.session_state.show_samples = not st.session_state.get("show_samples", False)
-
-    # Sample Questions Drawer
-    if st.session_state.get("show_samples", False):
-        st.subheader(f"Sample Questions ({language_name})")
-        for ent in kb.get_all_entries():
-            examples = ent.question_examples.get(lang_code, [])
-            if examples:
-                st.markdown(f"- **[{ent.domain}]** {examples[0]}")
-
-    # Architecture Explanation Expander
-    with st.expander("ℹ️ How BhashaCore v2.0 retrieval works"):
-        st.markdown(
-            """
-            - **Extensible Knowledge Base:** Ingests domain-specific FAQs and public service QA records.
-            - **Unicode-Preserving Normalization:** Retains Indic script letters, combining marks
-              (matras, viramas), and numbers across Devanagari, Bengali, Gurmukhi, and Latin.
-            - **Intent-Driven Scoring:** Evaluates content-token overlap and soft stem matching.
-            - **Confidence Gating & Provenance:** Clearly indicates source, test data status,
-              and translation verification level.
-            - **Hybrid Architecture:** Deterministic zero-overhead FAQ search with optional
-              context-grounded Ollama LLM answering when enabled.
-            """
+    with action_columns[1]:
+        st.caption(
+            "Session memory only. Previous assistant statements are not treated as verified evidence."
         )
 
 

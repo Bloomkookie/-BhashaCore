@@ -1,5 +1,9 @@
 # BhashaCore Optional Research & Evaluation Dependencies
-# Use these for dataset preparation (prepare_dataset.py) and LLM benchmarking (compare_models.py, evaluate_chatbot.py)
-requests>=2.28.0
+# Dataset preparation (prepare_dataset.py), model benchmarking
+# (compare_models.py), and translation-assisted generation (NLLB-200).
 pandas>=2.0.0
 datasets>=2.14.0
+transformers>=4.40,<5.0
+sentencepiece>=0.2
+torch>=2.2
+huggingface_hub>=0.23

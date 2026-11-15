@@ -1,0 +1,95 @@
+{
+  "cases": 70,
+  "passed": 70,
+  "by_language": {
+    "en": {
+      "cases": 12,
+      "passed": 12,
+      "mean_latency_ms": 15989.5,
+      "mean_script_purity": 1.0
+    },
+    "hi": {
+      "cases": 13,
+      "passed": 13,
+      "mean_latency_ms": 18106.0,
+      "mean_script_purity": 0.944
+    },
+    "bn": {
+      "cases": 12,
+      "passed": 12,
+      "mean_latency_ms": 15949.8,
+      "mean_script_purity": 0.958
+    },
+    "pa": {
+      "cases": 11,
+      "passed": 11,
+      "mean_latency_ms": 37753.9,
+      "mean_script_purity": 0.971
+    },
+    "as": {
+      "cases": 11,
+      "passed": 11,
+      "mean_latency_ms": 36431.1,
+      "mean_script_purity": 0.983
+    },
+    "ne": {
+      "cases": 11,
+      "passed": 11,
+      "mean_latency_ms": 36791.6,
+      "mean_script_purity": 0.964
+    }
+  },
+  "by_category": {
+    "general": {
+      "cases": 6,
+      "passed": 6
+    },
+    "science": {
+      "cases": 6,
+      "passed": 6
+    },
+    "programming": {
+      "cases": 6,
+      "passed": 6
+    },
+    "paraphrase": {
+      "cases": 12,
+      "passed": 12
+    },
+    "translation": {
+      "cases": 6,
+      "passed": 6
+    },
+    "summary": {
+      "cases": 6,
+      "passed": 6
+    },
+    "faq": {
+      "cases": 6,
+      "passed": 6
+    },
+    "document_qa": {
+      "cases": 6,
+      "passed": 6
+    },
+    "missing_evidence": {
+      "cases": 6,
+      "passed": 6
+    },
+    "ambiguous": {
+      "cases": 6,
+      "passed": 6
+    },
+    "multi_turn": {
+      "cases": 2,
+      "passed": 2
+    },
+    "mixed_language": {
+      "cases": 2,
+      "passed": 2
+    }
+  },
+  "peak_rss_mb": 3051.6,
+  "model": "gemma3:4b",
+  "prompt_review": "draft_unverified"
+}

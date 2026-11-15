@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "purpose": "Six-language behavioural evaluation for BhashaCore.",
+    "prompt_review": "draft_unverified",
+    "review_note": "Prompt translations were written for this evaluation and have not been reviewed by native speakers. Route/keyword checks are automated proxies, not proof of factual or translation quality. Inspect the saved answers manually before publishing per-language quality claims.",
+    "expected_outputs": "route, evidence flag, citation count, keyword presence, and target-script purity; latency is recorded per case",
+    "fixtures": {
+      "library": "fixtures/library_policy.txt"
+    }
+  },
+  "cases": [
+    {"id": "general_en", "category": "general", "language": "en", "prompt": "Why is the sky blue?", "expect": {"route": "general", "min_script_purity": 0.6}},
+    {"id": "general_hi", "category": "general", "language": "hi", "prompt": "आसमान नीला क्यों दिखाई देता है?", "expect": {"route": "general", "min_script_purity": 0.4}},
+    {"id": "general_bn", "category": "general", "language": "bn", "prompt": "আকাশ নীল দেখায় কেন?", "expect": {"route": "general", "min_script_purity": 0.4}},
+    {"id": "general_pa", "category": "general", "language": "pa", "prompt": "ਅਸਮਾਨ ਨੀਲਾ ਕਿਉਂ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ?", "expect": {"route": "general", "min_script_purity": 0.7}},
+    {"id": "general_as", "category": "general", "language": "as", "prompt": "আকাশখন নীলা দেখি কিয়?", "expect": {"route": "general", "min_script_purity": 0.7}},
+    {"id": "general_ne", "category": "general", "language": "ne", "prompt": "आकाश नीलो किन देखिन्छ?", "expect": {"route": "general", "min_script_purity": 0.7}},
+
+    {"id": "science_en", "category": "science", "language": "en", "prompt": "Explain photosynthesis in two simple sentences.", "expect": {"route": "general", "min_script_purity": 0.6}},
+    {"id": "science_hi", "category": "science", "language": "hi", "prompt": "प्रकाश संश्लेषण को दो सरल वाक्यों में समझाइए।", "expect": {"route": "general", "min_script_purity": 0.4}},
+    {"id": "science_bn", "category": "science", "language": "bn", "prompt": "সালোকসংশ্লেষণ দুইটি সহজ বাক্যে ব্যাখ্যা করুন।", "expect": {"route": "general", "min_script_purity": 0.4}},
+    {"id": "science_pa", "category": "science", "language": "pa", "prompt": "ਪ੍ਰਕਾਸ਼ ਸੰਸ਼ਲੇਸ਼ਣ ਨੂੰ ਦੋ ਸਧਾਰਨ ਵਾਕਾਂ ਵਿੱਚ ਸਮਝਾਓ।", "expect": {"route": "general", "min_script_purity": 0.7}},
+    {"id": "science_as", "category": "science", "language": "as", "prompt": "সালোকসংশ্লেষণ দুটা সহজ বাক্যত বুজাই দিয়ক।", "expect": {"route": "general", "min_script_purity": 0.7}},
+    {"id": "science_ne", "category": "science", "language": "ne", "prompt": "प्रकाश संश्लेषणलाई दुई सरल वाक्यमा व्याख्या गर्नुहोस्।", "expect": {"route": "general", "min_script_purity": 0.7}},
+
+    {"id": "programming_en", "category": "programming", "language": "en", "prompt": "What is a Python function? Give a one-line example.", "expect": {"route": "general", "contains_any": ["function", "def "]}},
+    {"id": "programming_hi", "category": "programming", "language": "hi", "prompt": "पायथन में फ़ंक्शन क्या है? एक पंक्ति का उदाहरण दें।", "expect": {"route": "general", "contains_any": ["फ़ंक्शन", "फंक्शन", "function"]}},
+    {"id": "programming_bn", "category": "programming", "language": "bn", "prompt": "পাইথনে ফাংশন কী? এক লাইনের উদাহরণ দিন।", "expect": {"route": "general", "contains_any": ["ফাংশন", "function"]}},
+    {"id": "programming_pa", "category": "programming", "language": "pa", "prompt": "ਪਾਇਥਨ ਵਿੱਚ ਫੰਕਸ਼ਨ ਕੀ ਹੈ? ਇੱਕ ਲਾਈਨ ਦਾ ਉਦਾਹਰਨ ਦਿਓ।", "expect": {"route": "general", "contains_any": ["ਫੰਕਸ਼ਨ", "ਫੰਕਸ਼ਨ", "function"]}},
+    {"id": "programming_as", "category": "programming", "language": "as", "prompt": "পাইথনত ফাংচন কি? এটা শাৰীৰ উদাহৰণ দিয়ক।", "expect": {"route": "general", "contains_any": ["ফাংচন", "ফাংশন", "function"]}},
+    {"id": "programming_ne", "category": "programming", "language": "ne", "prompt": "पाइथनमा फङ्क्शन के हो? एक लाइनको उदाहरण दिनुहोस्।", "expect": {"route": "general", "contains_any": ["फङ्क्शन", "फंक्शन", "function"]}},
+
+    {"id": "paraphrase_a_en", "category": "paraphrase", "language": "en", "pair": "capital_en", "prompt": "What is the capital of India?", "expect": {"route": "general", "contains_any": ["Delhi"]}},
+    {"id": "paraphrase_b_en", "category": "paraphrase", "language": "en", "pair": "capital_en", "prompt": "Which city is India's capital?", "expect": {"route": "general", "contains_any": ["Delhi"]}},
+    {"id": "paraphrase_a_hi", "category": "paraphrase", "language": "hi", "pair": "capital_hi", "prompt": "भारत की राजधानी क्या है?", "expect": {"route": "general", "contains_any": ["दिल्ली", "Delhi"]}},
+    {"id": "paraphrase_b_hi", "category": "paraphrase", "language": "hi", "pair": "capital_hi", "prompt": "भारत का राजधानी शहर कौन सा है?", "expect": {"route": "general", "contains_any": ["दिल्ली", "Delhi"]}},
+    {"id": "paraphrase_a_bn", "category": "paraphrase", "language": "bn", "pair": "capital_bn", "prompt": "ভারতের রাজধানী কী?", "expect": {"route": "general", "contains_any": ["দিল্লি", "Delhi"]}},
+    {"id": "paraphrase_b_bn", "category": "paraphrase", "language": "bn", "pair": "capital_bn", "prompt": "ভারতের রাজধানী শহর কোনটি?", "expect": {"route": "general", "contains_any": ["দিল্লি", "Delhi"]}},
+    {"id": "paraphrase_a_pa", "category": "paraphrase", "language": "pa", "pair": "capital_pa", "prompt": "ਭਾਰਤ ਦੀ ਰਾਜਧਾਨੀ ਕੀ ਹੈ?", "expect": {"route": "general", "contains_any": ["ਦਿੱਲੀ", "Delhi"]}},
+    {"id": "paraphrase_b_pa", "category": "paraphrase", "language": "pa", "pair": "capital_pa", "prompt": "ਭਾਰਤ ਦਾ ਰਾਜਧਾਨੀ ਸ਼ਹਿਰ ਕਿਹੜਾ ਹੈ?", "expect": {"route": "general", "contains_any": ["ਦਿੱਲੀ", "Delhi"]}},
+    {"id": "paraphrase_a_as", "category": "paraphrase", "language": "as", "pair": "capital_as", "prompt": "ভাৰতৰ ৰাজধানী কি?", "expect": {"route": "general", "contains_any": ["দিল্লী", "দিল্লি", "Delhi"]}},
+    {"id": "paraphrase_b_as", "category": "paraphrase", "language": "as", "pair": "capital_as", "prompt": "ভাৰতৰ ৰাজধানী চহৰ কোনটো?", "expect": {"route": "general", "contains_any": ["দিল্লী", "দিল্লি", "Delhi"]}},
+    {"id": "paraphrase_a_ne", "category": "paraphrase", "language": "ne", "pair": "capital_ne", "prompt": "भारतको राजधानी के हो?", "expect": {"route": "general", "contains_any": ["दिल्ली", "Delhi"]}},
+    {"id": "paraphrase_b_ne", "category": "paraphrase", "language": "ne", "pair": "capital_ne", "prompt": "भारतको राजधानी सहर कुन हो?", "expect": {"route": "general", "contains_any": ["दिल्ली", "Delhi"]}},
+
+    {"id": "translation_en", "category": "translation", "language": "en", "prompt": "Translate to English: The district office is closed on Sunday.", "expect": {"route": "translation", "min_script_purity": 0.8}},
+    {"id": "translation_hi", "category": "translation", "language": "hi", "prompt": "Translate to Hindi: The district office is closed on Sunday.", "expect": {"route": "translation", "min_script_purity": 0.8}},
+    {"id": "translation_bn", "category": "translation", "language": "bn", "prompt": "Translate to Bengali: The district office is closed on Sunday.", "expect": {"route": "translation", "min_script_purity": 0.8}},
+    {"id": "translation_pa", "category": "translation", "language": "pa", "prompt": "Translate to Punjabi: The district office is closed on Sunday.", "expect": {"route": "translation", "min_script_purity": 0.8}},
+    {"id": "translation_as", "category": "translation", "language": "as", "prompt": "Translate to Assamese: The district office is closed on Sunday.", "expect": {"route": "translation", "min_script_purity": 0.8}},
+    {"id": "translation_ne", "category": "translation", "language": "ne", "prompt": "Translate to Nepali: The district office is closed on Sunday.", "expect": {"route": "translation", "min_script_purity": 0.8}},
+
+    {"id": "summary_en", "category": "summary", "language": "en", "prompt": "Summarize this in English: The town library lends books to all residents. A yearly membership costs 200 rupees. Members may borrow up to four books for 14 days. Late returns cost 5 rupees per day. The library is closed on public holidays.", "expect": {"route": "summarize", "min_script_purity": 0.8}},
+    {"id": "summary_hi", "category": "summary", "language": "hi", "prompt": "Summarize this in Hindi: The town library lends books to all residents. A yearly membership costs 200 rupees. Members may borrow up to four books for 14 days. Late returns cost 5 rupees per day. The library is closed on public holidays.", "expect": {"route": "summarize", "min_script_purity": 0.7}},
+    {"id": "summary_bn", "category": "summary", "language": "bn", "prompt": "Summarize this in Bengali: The town library lends books to all residents. A yearly membership costs 200 rupees. Members may borrow up to four books for 14 days. Late returns cost 5 rupees per day. The library is closed on public holidays.", "expect": {"route": "summarize", "min_script_purity": 0.7}},
+    {"id": "summary_pa", "category": "summary", "language": "pa", "prompt": "Summarize this in Punjabi: The town library lends books to all residents. A yearly membership costs 200 rupees. Members may borrow up to four books for 14 days. Late returns cost 5 rupees per day. The library is closed on public holidays.", "expect": {"route": "summarize", "min_script_purity": 0.7}},
+    {"id": "summary_as", "category": "summary", "language": "as", "prompt": "Summarize this in Assamese: The town library lends books to all residents. A yearly membership costs 200 rupees. Members may borrow up to four books for 14 days. Late returns cost 5 rupees per day. The library is closed on public holidays.", "expect": {"route": "summarize", "min_script_purity": 0.7}},
+    {"id": "summary_ne", "category": "summary", "language": "ne", "prompt": "Summarize this in Nepali: The town library lends books to all residents. A yearly membership costs 200 rupees. Members may borrow up to four books for 14 days. Late returns cost 5 rupees per day. The library is closed on public holidays.", "expect": {"route": "summarize", "min_script_purity": 0.7}},
+
+    {"id": "faq_en", "category": "faq", "language": "en", "prompt": "What documents are required for the scholarship?", "expect": {"route": "faq", "evidence_found": true}},
+    {"id": "faq_hi", "category": "faq", "language": "hi", "prompt": "छात्रवृत्ति के लिए कौन से दस्तावेज़ आवश्यक हैं?", "expect": {"route": "faq", "evidence_found": true}},
+    {"id": "faq_bn", "category": "faq", "language": "bn", "prompt": "বৃত্তির জন্য কোন কোন নথি প্রয়োজন?", "expect": {"route": "faq", "evidence_found": true}},
+    {"id": "faq_pa", "category": "faq", "language": "pa", "prompt": "ਵਜ਼ੀਫ਼ੇ ਲਈ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼ ਲੋੜੀਂਦੇ ਹਨ?", "expect": {"route": "faq", "evidence_found": true}},
+    {"id": "faq_as", "category": "faq", "language": "as", "prompt": "বৃত্তিৰ বাবে কি কি নথি-পত্ৰৰ প্ৰয়োজন?", "expect": {"route": "faq", "evidence_found": true}},
+    {"id": "faq_ne", "category": "faq", "language": "ne", "prompt": "छात्रवृत्तिका लागि कुन-कुन कागजात चाहिन्छ?", "expect": {"route": "faq", "evidence_found": true}},
+
+    {"id": "doc_fee_en", "category": "document_qa", "language": "en", "prompt": "According to the uploaded file, what is the membership fee?", "expect": {"route": "document", "evidence_found": true, "min_citations": 1, "contains_any": ["200"]}},
+    {"id": "doc_fee_hi", "category": "document_qa", "language": "hi", "prompt": "अपलोड किए गए दस्तावेज़ के अनुसार सदस्यता शुल्क कितना है?", "expect": {"route": "document", "evidence_found": true, "min_citations": 1, "contains_any": ["200"], "min_script_purity": 0.5}},
+    {"id": "doc_fee_bn", "category": "document_qa", "language": "bn", "prompt": "আপলোড করা ফাইল অনুযায়ী সদস্যপদের ফি কত?", "expect": {"route": "document", "evidence_found": true, "min_citations": 1, "contains_any": ["200"], "min_script_purity": 0.5}},
+    {"id": "doc_fee_pa", "category": "document_qa", "language": "pa", "prompt": "ਅੱਪਲੋਡ ਕੀਤੀ ਫਾਈਲ ਅਨੁਸਾਰ ਮੈਂਬਰਸ਼ਿਪ ਫੀਸ ਕਿੰਨੀ ਹੈ?", "expect": {"route": "document", "evidence_found": true, "min_citations": 1, "contains_any": ["200"], "min_script_purity": 0.7}},
+    {"id": "doc_fee_as", "category": "document_qa", "language": "as", "prompt": "আপলোড কৰা ফাইল অনুসৰি সদস্যপদৰ মাচুল কিমান?", "expect": {"route": "document", "evidence_found": true, "min_citations": 1, "contains_any": ["200"], "min_script_purity": 0.7}},
+    {"id": "doc_fee_ne", "category": "document_qa", "language": "ne", "prompt": "अपलोड गरिएको फाइल अनुसार सदस्यता शुल्क कति छ?", "expect": {"route": "document", "evidence_found": true, "min_citations": 1, "contains_any": ["200"], "min_script_purity": 0.7}},
+
+    {"id": "missing_en", "category": "missing_evidence", "language": "en", "prompt": "According to the uploaded file, who is the library director?", "expect": {"route": "document", "evidence_found": false, "min_citations": 0}},
+    {"id": "missing_hi", "category": "missing_evidence", "language": "hi", "prompt": "अपलोड किए गए दस्तावेज़ के अनुसार पुस्तकालय निदेशक कौन है?", "expect": {"route": "document", "evidence_found": false, "min_citations": 0}},
+    {"id": "missing_bn", "category": "missing_evidence", "language": "bn", "prompt": "আপলোড করা ফাইল অনুযায়ী লাইব্রেরির পরিচালক কে?", "expect": {"route": "document", "evidence_found": false, "min_citations": 0}},
+    {"id": "missing_pa", "category": "missing_evidence", "language": "pa", "prompt": "ਅੱਪਲੋਡ ਕੀਤੀ ਫਾਈਲ ਅਨੁਸਾਰ ਲਾਇਬ੍ਰੇਰੀ ਦਾ ਡਾਇਰੈਕਟਰ ਕੌਣ ਹੈ?", "expect": {"route": "document", "evidence_found": false, "min_citations": 0}},
+    {"id": "missing_as", "category": "missing_evidence", "language": "as", "prompt": "আপলোড কৰা ফাইল অনুসৰি পুথিভঁৰালৰ পৰিচালক কোন?", "expect": {"route": "document", "evidence_found": false, "min_citations": 0}},
+    {"id": "missing_ne", "category": "missing_evidence", "language": "ne", "prompt": "अपलोड गरिएको फाइल अनुसार पुस्तकालयका निर्देशक को हुन्?", "expect": {"route": "document", "evidence_found": false, "min_citations": 0}},
+
+    {"id": "ambiguous_en", "category": "ambiguous", "language": "en", "prompt": "What?", "expect": {"route": "clarify"}},
+    {"id": "ambiguous_hi", "category": "ambiguous", "language": "hi", "prompt": "क्या?", "expect": {"route": "clarify"}},
+    {"id": "ambiguous_bn", "category": "ambiguous", "language": "bn", "prompt": "কী?", "expect": {"route": "clarify"}},
+    {"id": "ambiguous_pa", "category": "ambiguous", "language": "pa", "prompt": "ਕੀ?", "expect": {"route": "clarify"}},
+    {"id": "ambiguous_as", "category": "ambiguous", "language": "as", "prompt": "কি?", "expect": {"route": "clarify"}},
+    {"id": "ambiguous_ne", "category": "ambiguous", "language": "ne", "prompt": "के?", "expect": {"route": "clarify"}},
+
+    {"id": "multi_en", "category": "multi_turn", "language": "en", "turns": ["According to the uploaded file, what is the membership fee?", "What about the late return fine?"], "expect": {"route": "document", "evidence_found": true, "min_citations": 1, "contains_any": ["5"]}},
+    {"id": "multi_hi", "category": "multi_turn", "language": "hi", "turns": ["अपलोड किए गए दस्तावेज़ के अनुसार सदस्यता शुल्क कितना है?", "और देर से लौटाने का जुर्माना?"], "expect": {"route": "document", "evidence_found": true, "min_citations": 1, "contains_any": ["5"]}},
+
+    {"id": "mixed_hi_en", "category": "mixed_language", "language": "hi", "prompt": "Python में list और tuple में difference क्या है?", "expect": {"route": "general", "contains_any": ["list", "tuple", "लिस्ट", "टपल"]}},
+    {"id": "mixed_bn_en", "category": "mixed_language", "language": "bn", "prompt": "Python এ list আর tuple এর মধ্যে difference কী?", "expect": {"route": "general", "contains_any": ["list", "tuple", "লিস্ট", "টাপল"]}}
+  ]
+}
